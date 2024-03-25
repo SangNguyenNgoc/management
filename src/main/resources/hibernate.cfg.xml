@@ -4,19 +4,17 @@
         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/market</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/management</property>
         <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.hbm2ddl.auto">validate</property>
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.format_sql">false</property>
 
-
-        <mapping class="com.example.markethibernate.dal.entities.Vegetable"/>
-        <mapping class="com.example.markethibernate.dal.entities.Customer"/>
-        <mapping class="com.example.markethibernate.dal.entities.Order"/>
-        <mapping class="com.example.markethibernate.dal.entities.OrderDetail"/>
-        <mapping class="com.example.markethibernate.dal.entities.Category"/>
+        <mapping class="com.example.markethibernate.dal.entities.DeviceEntity"/>
+        <mapping class="com.example.markethibernate.dal.entities.PenalizeEntity"/>
+        <mapping class="com.example.markethibernate.dal.entities.PersonEntity"/>
+        <mapping class="com.example.markethibernate.dal.entities.UsageInfoEntity"/>
     </session-factory>
 </hibernate-configuration>

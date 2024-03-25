@@ -1,6 +1,6 @@
 package com.example.markethibernate.dal.dao;
 
-import com.example.markethibernate.dal.entities.Category;
+import com.example.markethibernate.dal.entities.DeviceEntity;
 import com.example.markethibernate.utils.HibernateUtil;
 import jakarta.persistence.Query;
 import org.hibernate.Session;
@@ -11,53 +11,53 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class CategoryDao {
+public class DeviceDao {
 
     private final SessionFactory sessionFactory;
 
-    private static final Logger logger = Logger.getLogger(CategoryDao.class.getName());
+    private static final Logger logger = Logger.getLogger(DeviceDao.class.getName());
 
-    private static class CategoryDaoHolder {
-        private static final CategoryDao INSTANCE = new CategoryDao();
+    private static class DeviceDaoHolder {
+        private static final DeviceDao INSTANCE = new DeviceDao();
     }
 
-    private CategoryDao() {
+    private DeviceDao() {
         this.sessionFactory = HibernateUtil.getSessionFactory();
     }
 
-    public static CategoryDao getInstance() {
-        return CategoryDaoHolder.INSTANCE;
+    public static DeviceDao getInstance() {
+        return DeviceDaoHolder.INSTANCE;
     }
 
-    public List<Category> findAll() {
+    public List<DeviceEntity> findAll() {
         try (Session session = sessionFactory.openSession()) {
-            List<Category> categories = session.createQuery("FROM Category", Category.class).list();
+            List<DeviceEntity> devices = session.createQuery("FROM DeviceEntity ", DeviceEntity.class).list();
             session.close();
-            return categories;
+            return devices;
         }
     }
 
-    public Category findById(Integer id) {
+    public DeviceEntity findById(Integer id) {
         try (Session session = sessionFactory.openSession()) {
-            Query query = session.createQuery("FROM Category c WHERE c.id = :id", Category.class);
+            Query query = session.createQuery("FROM DeviceEntity d WHERE d.id = :id", DeviceEntity.class);
             query.setParameter("id", id);
-            var categories = query.getResultList();
-            if(!categories.isEmpty()) {
-                return (Category) categories.get(0);
+            var devices = query.getResultList();
+            if(!devices.isEmpty()) {
+                return (DeviceEntity) devices.get(0);
             } else {
                 return null;
             }
         }
     }
 
-    public Category save(Category category) {
+    public DeviceEntity save(DeviceEntity device) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            session.persist(category);
+            session.persist(device);
             transaction.commit();
             session.close();
-            return category;
+            return device;
         } catch (Exception e) {
             if(transaction != null) {
                 transaction.rollback();
@@ -66,5 +66,4 @@ public class CategoryDao {
             return null;
         }
     }
-
 }

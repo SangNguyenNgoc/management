@@ -12,6 +12,7 @@ public class HibernateUtil {
         try{
             return new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
         } catch (Exception e) {
+            System.out.println(e);
             return null;
         }
     }

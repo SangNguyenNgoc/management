@@ -5,5 +5,6 @@
     <option name="renamerInitialized" value="true" />
     <option name="reverseEngineeringLastDbConnectionId" value="d571be05-0037-411e-a3b2-4885e1daf938__market" />
     <option name="reLastEntityCreationPackage" value="src/main/java/com/example/markethibernate/dal" />
+    <option name="newEntityIdStrategy" value="Identity" />
   </component>
 </project>

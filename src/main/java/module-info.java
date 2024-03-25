@@ -17,6 +17,6 @@ module com.example.markethibernate {
     exports com.example.markethibernate.gui;
     exports com.example.markethibernate.bll.dtos;
     exports com.example.markethibernate.dal.entities;
-    exports com.example.markethibernate.bll.mappers;
     opens com.example.markethibernate.bll.dtos to org.hibernate.orm.core;
+    exports com.example.markethibernate.bll.mappers;
 }
