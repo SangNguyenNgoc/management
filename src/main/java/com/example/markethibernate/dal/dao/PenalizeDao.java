@@ -14,6 +14,8 @@ public class PenalizeDao {
 
     private final SessionFactory sessionFactory;
 
+    private static final Logger logger = Logger.getLogger(PenalizeDao.class.getName());
+
     private static class PenalizeDaoHolder {
         private static final PenalizeDao INSTANCE = new PenalizeDao();
     }

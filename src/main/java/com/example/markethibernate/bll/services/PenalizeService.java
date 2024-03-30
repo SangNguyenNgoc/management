@@ -12,4 +12,7 @@ public class PenalizeService {
     public static PenalizeService getInstance() {
         return PenalizeServiceHolder.INSTANCE;
     }
+
+
+
 }
