@@ -89,45 +89,45 @@ public class DeviceDao {
             return null;
         }
     }
+
+
     public DeviceEntity createDevice(DeviceEntity device) {
         Transaction transaction = null;
-        try (Session session = sessionFactory.openSession()) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
+
             session.save(device);
+
             transaction.commit();
-            return device;
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            logger.log(Level.SEVERE, "Failed to create device", e);
-            return null;
+            e.printStackTrace();
         }
+        return device;
     }
-    public boolean deleteDevice(DeviceEntity device) {
+
+
+    public boolean deleteDeviceById(long id) {
         Transaction transaction = null;
-        try (Session session = sessionFactory.openSession()) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.delete(device);
+            int deletedCount = session.createQuery("DELETE FROM DeviceEntity WHERE id = :id")
+                    .setParameter("id", id)
+                    .executeUpdate();
             transaction.commit();
-            return true;
+            return deletedCount > 0;
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            logger.log(Level.SEVERE, "Failed to delete device", e);
+            e.printStackTrace();
             return false;
         }
     }
 
-//    Xoa theo id
-    public boolean deleteDeviceById(int id) {
-        DeviceEntity device = findById(id);
-        if (device != null) {
-            return deleteDevice(device);
-        }
-        return false;
-    }
+
     public DeviceEntity updateDevice(DeviceEntity device) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
@@ -143,4 +143,5 @@ public class DeviceDao {
             throw new RuntimeException("Failed to update device", e);
         }
     }
+
 }
