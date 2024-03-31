@@ -18,19 +18,46 @@ public class PersonService {
 
     public PersonEntity addPerson(PersonEntity person) {
         if (person == null) {
-            return null;
+            throw new IllegalArgumentException("Không được để trống thông tin");
+        } else {
+            if (person.getName() == null || person.getName().isEmpty()) {
+                throw new IllegalArgumentException("Tên không được để trống");
+            }
+            if (person.getDepartment() == null || person.getDepartment().isEmpty()) {
+                throw new IllegalArgumentException("Department không được để trống");
+            }
+            if (person.getProfession() == null || person.getProfession().isEmpty()) {
+                throw new IllegalArgumentException("Profession không được để trống");
+            }
+            if (person.getPhoneNumber() == null || person.getPhoneNumber().isEmpty()) {
+                throw new IllegalArgumentException("Số điện thoại không được để trống");
+            }
         }
         return PersonDao.getInstance().addPerson(person);
     }
+
     public PersonEntity updatePerson(PersonEntity person) {
         if (person == null) {
-            return null;
+            throw new IllegalArgumentException("Không được để trống thông tin");
+        } else {
+            if (person.getName() == null || person.getName().isEmpty()) {
+                throw new IllegalArgumentException("Tên không được để trống");
+            }
+            if (person.getDepartment() == null || person.getDepartment().isEmpty()) {
+                throw new IllegalArgumentException("Department không được để trống");
+            }
+            if (person.getProfession() == null || person.getProfession().isEmpty()) {
+                throw new IllegalArgumentException("Profession không được để trống");
+            }
+            if (person.getPhoneNumber() == null || person.getPhoneNumber().isEmpty()) {
+                throw new IllegalArgumentException("Số điện thoại không được để trống");
+            }
         }
         return PersonDao.getInstance().updatePerson(person);
     }
     public PersonEntity deletePersonById(int id) {
         if (id == 0) {
-            return null;
+            throw new IllegalArgumentException("ID không được để trống");
         }
         return PersonDao.getInstance().deletePersonById(id);
     }
