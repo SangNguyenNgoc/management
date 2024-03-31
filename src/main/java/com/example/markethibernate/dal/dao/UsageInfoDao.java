@@ -4,8 +4,11 @@ import com.example.markethibernate.dal.entities.UsageInfoEntity;
 import com.example.markethibernate.utils.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 public class UsageInfoDao {
 
@@ -26,9 +29,12 @@ public class UsageInfoDao {
 
     public List<UsageInfoEntity> findAll() {
         try (Session session = sessionFactory.openSession()) {
-            List<UsageInfoEntity> usageInfos = session.createQuery("FROM UsageInfoEntity ", UsageInfoEntity.class).list();
+            List<UsageInfoEntity> usageInfos = session.createQuery("FROM  UsageInfoEntity", UsageInfoEntity.class).list();
             session.close();
             return usageInfos;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return new ArrayList<>();
         }
     }
 
@@ -37,44 +43,76 @@ public class UsageInfoDao {
             var usageInfo = session.get(UsageInfoEntity.class, id);
             session.close();
             return usageInfo;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
         }
     }
 
     public UsageInfoEntity save(UsageInfoEntity usageInfo) {
+        Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
-            session.persist(usageInfo);
-            session.getTransaction().commit();
-            session.close();
+            transaction = session.beginTransaction();
+            session.save(usageInfo);
+            transaction.commit();
             return usageInfo;
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+            return null;
         }
     }
 
     public UsageInfoEntity update(UsageInfoEntity usageInfo) {
+        Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
+            transaction = session.beginTransaction();
             session.update(usageInfo);
-            session.getTransaction().commit();
+            transaction.commit();
             session.close();
             return usageInfo;
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+            return null;
         }
     }
-    public void deleteById(Long id) {
+    public Boolean deleteById(Long id) {
+        Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
+            transaction = session.beginTransaction();
             var usageInfo = session.get(UsageInfoEntity.class, id);
             session.delete(usageInfo);
-            session.getTransaction().commit();
+            transaction.commit();
             session.close();
+            return true;
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+            return false;
         }
     }
 
 
-    private Boolean isExistsById(Long id) {
+    public Boolean isExistsById(Long id) {
+        Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             var usageInfo = session.get(UsageInfoEntity.class, id);
+            transaction.commit();
             session.close();
             return usageInfo != null;
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+            return false;
         }
     }
 }
