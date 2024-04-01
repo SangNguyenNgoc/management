@@ -1,46 +1,55 @@
-package com.example.markethibernate.dal.entities;
+    package com.example.markethibernate.dal.entities;
 
-import jakarta.persistence.*;
-import lombok.*;
+    import jakarta.persistence.*;
+    import lombok.*;
 
-import java.time.LocalDateTime;
+    import java.time.LocalDateTime;
 
-@Getter
-@Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
-@Table(name = "usage_info")
-public class UsageInfoEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Long id;
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Entity
+    @Table(name = "usage_info")
+    public class UsageInfoEntity {
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @Column(name = "id", nullable = false)
+        private Long id;
 
-    @Column(name = "checkin_time", nullable = true)
-    private LocalDateTime checkinTime;
+        @Column(name = "checkin_time", nullable = true)
+        private LocalDateTime checkinTime;
 
-    @Column(name = "borrow_time", nullable = true)
-    private LocalDateTime borrowTime;
+        @Column(name = "borrow_time", nullable = true)
+        private LocalDateTime borrowTime;
 
-    @Column(name = "return_time", nullable = true)
-    private LocalDateTime returnTime;
+        @Column(name = "return_time", nullable = true)
+        private LocalDateTime returnTime;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(
-            name = "person_id",
-            referencedColumnName = "id",
-            nullable = false
-    )
-    private PersonEntity person;
+        @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+        @JoinColumn(
+                name = "person_id",
+                referencedColumnName = "id",
+                nullable = false
+        )
+        private PersonEntity person;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(
-            name = "device_id",
-            referencedColumnName = "id",
-            nullable = true
-    )
-    private DeviceEntity device;
+        @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+        @JoinColumn(
+                name = "device_id",
+                referencedColumnName = "id",
+                nullable = true
+        )
+        private DeviceEntity device;
 
-}
+        @Override
+        public String toString() {
+            return "UsageInfoEntity{" +
+                    "id=" + id +
+                    ", checkinTime=" + checkinTime +
+                    ", borrowTime=" + borrowTime +
+                    ", returnTime=" + returnTime +
+                    '}';
+        }
+    }
