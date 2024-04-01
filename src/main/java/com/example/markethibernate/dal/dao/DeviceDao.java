@@ -3,6 +3,9 @@ package com.example.markethibernate.dal.dao;
 import com.example.markethibernate.dal.entities.DeviceEntity;
 import com.example.markethibernate.utils.HibernateUtil;
 import jakarta.persistence.Query;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaDelete;
+import jakarta.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -49,6 +52,26 @@ public class DeviceDao {
             }
         }
     }
+//    Xoa theo dieu kien
+    public boolean deleteDevicesByCondition(String condition) {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaDelete<DeviceEntity> criteriaDelete = builder.createCriteriaDelete(DeviceEntity.class);
+            Root<DeviceEntity> root = criteriaDelete.from(DeviceEntity.class);
+            criteriaDelete.where(builder.equal(root.get(condition), condition));
+            int result = session.createQuery(criteriaDelete).executeUpdate();
+            transaction.commit();
+            return result > 0;
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            logger.log(Level.SEVERE, "Failed to delete devices by condition", e);
+            throw new RuntimeException("Failed to delete devices by condition", e);
+        }
+    }
 
     public DeviceEntity save(DeviceEntity device) {
         Transaction transaction = null;
@@ -66,4 +89,59 @@ public class DeviceDao {
             return null;
         }
     }
+
+
+    public DeviceEntity createDevice(DeviceEntity device) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+
+            session.save(device);
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+        return device;
+    }
+
+
+    public boolean deleteDeviceById(long id) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            int deletedCount = session.createQuery("DELETE FROM DeviceEntity WHERE id = :id")
+                    .setParameter("id", id)
+                    .executeUpdate();
+            transaction.commit();
+            return deletedCount > 0;
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    public DeviceEntity updateDevice(DeviceEntity device) {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            session.update(device);
+            transaction.commit();
+            return device;
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            logger.log(Level.SEVERE, "Failed to update device", e);
+            throw new RuntimeException("Failed to update device", e);
+        }
+    }
+
 }
