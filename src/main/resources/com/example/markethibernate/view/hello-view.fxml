@@ -1,16 +1,118 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
-
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.markethibernate.gui.HelloController">
-  <padding>
-    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-  </padding>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
-  <Label fx:id="welcomeText"/>
-  <Button text="Hello!" onAction="#onHelloButtonClick"/>
-</VBox>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: #F0F0F0;" stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"  fx:controller="com.example.markethibernate.gui.HelloController">
+    <children>
+        <Pane prefHeight="700.0" prefWidth="200.0" style="-fx-background-color: #ffffff; -fx-border-image-width: 0 1 0 0; -fx-border-color: #F0F0F0;">
+            <children>
+                <ImageView fitHeight="55.0" fitWidth="120.0" layoutX="32.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../image/logo.png" />
+                    </image>
+                </ImageView>
+                <Pane layoutX="30.0" layoutY="130.0" prefHeight="540.0" prefWidth="140.0">
+                    <children>
+                        <Button fx:id="personButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="140.0" styleClass="layout-button-isSelect" text="Person">
+                     <font>
+                        <Font name="Georgia Bold" size="14.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fx:id="personImage" fitHeight="18.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../image/person-active.png" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="DEFAULT" />
+                           </cursor>
+                        </ImageView>
+                     </graphic></Button>
+                        <Button fx:id="deviceButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" layoutY="54.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="140.0" styleClass="layout-button" text="Device">
+                     <font>
+                        <Font name="Georgia Bold" size="14.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fx:id="deviceImage" fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../image/device.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Button>
+                        <Button fx:id="usageButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" layoutY="163.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="140.0" styleClass="layout-button" text="Usage">
+                     <font>
+                        <Font name="Georgia Bold" size="14.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fx:id="usageImage" fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../image/usage.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Button>
+                        <Button fx:id="penaltyButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" layoutY="108.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="140.0" styleClass="layout-button" text="Penalty">
+                     <font>
+                        <Font name="Georgia Bold" size="14.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fx:id="penaltyImage" fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../image/penalty.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Button>
+                    </children>
+                </Pane>
+            </children>
+        </Pane>
+        <Pane layoutX="200.0" prefHeight="80.0" prefWidth="996.0" style="-fx-background-color: #ffffff;">
+            <children>
+                <Label alignment="CENTER" contentDisplay="CENTER" layoutX="41.0" layoutY="25.0" prefHeight="25.0" prefWidth="65.0" text="Admin" textAlignment="CENTER">
+                    <font>
+                        <Font name="System Bold" size="20.0" />
+                    </font>
+                </Label>
+                <HBox layoutX="284.0" layoutY="22.0" prefHeight="36.0" prefWidth="410.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 20;">
+                    <children>
+                        <TextField fx:id="searchField" focusTraversable="false" maxWidth="358.0" prefHeight="36.0" prefWidth="358.0" promptText="Tìm kiếm..." style="-fx-background-radius: 20 0 0 20; -fx-background-color: #F0F0F0;">
+                            <padding>
+                                <Insets left="15.0" />
+                            </padding>
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </TextField>
+                        <Button fx:id="searchButton" mnemonicParsing="false" prefHeight="34.0" prefWidth="52.0" style="-fx-background-color: #E6E6E6; -fx-background-radius: 0 20 20 0;">
+                            <graphic>
+                                <ImageView fitHeight="20.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../image/search.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                            <padding>
+                                <Insets right="4.0" top="2.0" />
+                            </padding>
+                        </Button>
+                    </children>
+                    <HBox.margin>
+                        <Insets bottom="23.0" left="306.0" top="22.0" />
+                    </HBox.margin>
+                </HBox>
+            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="907.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../image/user.png" />
+               </image>
+            </ImageView>
+            </children>
+        </Pane>
+    </children>
+</Pane>

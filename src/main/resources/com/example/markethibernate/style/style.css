@@ -1,0 +1,12 @@
+.layout-button {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 12;
+    -fx-padding: 12 18 12 18;
+    -fx-text-fill: #1E1B60;
+}
+.layout-button-isSelect {
+    -fx-padding: 12 18 12 18;
+    -fx-background-color: #5D60EF;
+    -fx-background-radius: 12;
+    -fx-text-fill: #ffffff;
+}
