@@ -24,6 +24,12 @@ public class PersonEntity {
     @Column(name = "department", length = 100, nullable = false)
     private String department;
 
+    @Column(name = "email", length = 50, nullable = false, unique = true)
+    private String email;
+
+    @Column(name = "password", length = 500, nullable = false)
+    private String password;
+
     @Column(name = "profession", length = 100, nullable = false)
     private String profession;
 
@@ -48,4 +54,16 @@ public class PersonEntity {
     )
     private Set<UsageInfoEntity> usageInfos;
 
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(" +
+                "id = " + id + ", " +
+                "name = " + name + ", " +
+                "department = " + department + ", " +
+                "email = " + email + ", " +
+                "password = " + password + ", " +
+                "profession = " + profession + ", " +
+                "phoneNumber = " + phoneNumber + ", " +
+                "status = " + status + ")";
+    }
 }

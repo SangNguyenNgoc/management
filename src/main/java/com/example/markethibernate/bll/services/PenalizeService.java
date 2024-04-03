@@ -1,8 +1,15 @@
 package com.example.markethibernate.bll.services;
 
 
+import com.example.markethibernate.dal.dao.DeviceDao;
 import com.example.markethibernate.dal.dao.PenalizeDao;
+import com.example.markethibernate.dal.dao.PersonDao;
+import com.example.markethibernate.dal.entities.DeviceEntity;
 import com.example.markethibernate.dal.entities.PenalizeEntity;
+import com.example.markethibernate.dal.entities.PersonEntity;
+import com.example.markethibernate.utils.AppUtil;
+
+import java.util.List;
 
 public class PenalizeService {
 
@@ -17,25 +24,21 @@ public class PenalizeService {
         return PenalizeServiceHolder.INSTANCE;
     }
 
-    public PenalizeEntity addPerson(PenalizeEntity penalize) {
-        if (penalize == null) {
+    public PenalizeEntity getById(String idString) {
+        Long id = AppUtil.parseId(idString);
+        if (id == null) {
             return null;
         }
-        return PenalizeDao.getInstance().addPenalize(penalize);
+        return PenalizeDao.getInstance().findById(id);
     }
 
-
-    public PenalizeEntity updatePerson(PenalizeEntity penalize) {
-        if (penalize == null) {
-            return null;
+    public boolean isPenalize(String userId) {
+        PersonEntity person = PersonService.getInstance().getById(userId);
+        if(person == null) {
+            return true;
         }
-        return PenalizeDao.getInstance().updatePenalize(penalize);
-    }
-    public PenalizeEntity deletePersonById(int id) {
-        if (id == 0) {
-            return null;
-        }
-        return PenalizeDao.getInstance().deletePenalizeById(id);
+        List<PenalizeEntity> penalizes = PenalizeDao.getInstance().findByPersonIsPenalize(AppUtil.parseId(userId));
+        return !penalizes.isEmpty();
     }
 
 }

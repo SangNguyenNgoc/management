@@ -6,10 +6,15 @@ module com.example.markethibernate {
     requires lombok;
     requires jakarta.persistence;
     requires java.naming;
+    requires gson;
+    requires org.hibernate.validator;
+    requires jakarta.validation;
+    requires org.apache.commons.lang3;
+    requires spring.security.crypto;
 
 
     opens com.example.markethibernate to javafx.fxml;
-    opens com.example.markethibernate.dal.entities to org.hibernate.orm.core;
+    opens com.example.markethibernate.dal.entities to org.hibernate.orm.core, gson, org.hibernate.validator;
     opens com.example.markethibernate.gui to javafx.fxml;
 
 
@@ -17,6 +22,6 @@ module com.example.markethibernate {
     exports com.example.markethibernate.gui;
     exports com.example.markethibernate.bll.dtos;
     exports com.example.markethibernate.dal.entities;
-    opens com.example.markethibernate.bll.dtos to org.hibernate.orm.core;
     exports com.example.markethibernate.bll.mappers;
+    opens com.example.markethibernate.bll.dtos to gson, org.hibernate.orm.core, org.hibernate.validator;
 }

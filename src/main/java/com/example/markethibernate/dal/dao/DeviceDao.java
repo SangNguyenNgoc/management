@@ -40,7 +40,7 @@ public class DeviceDao {
         }
     }
 
-    public DeviceEntity findById(Integer id) {
+    public DeviceEntity findById(Long id) {
         try (Session session = sessionFactory.openSession()) {
             Query query = session.createQuery("FROM DeviceEntity d WHERE d.id = :id", DeviceEntity.class);
             query.setParameter("id", id);
@@ -69,7 +69,7 @@ public class DeviceDao {
                 transaction.rollback();
             }
             logger.log(Level.SEVERE, "Failed to delete devices by condition", e);
-            throw new RuntimeException("Failed to delete devices by condition", e);
+            return false;
         }
     }
 
@@ -95,17 +95,16 @@ public class DeviceDao {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-
             session.save(device);
-
             transaction.commit();
+            return device;
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Failed to create device", e);
+            return null;
         }
-        return device;
     }
 
 
@@ -122,7 +121,7 @@ public class DeviceDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Failed to delete device", e);
             return false;
         }
     }
@@ -140,7 +139,7 @@ public class DeviceDao {
                 transaction.rollback();
             }
             logger.log(Level.SEVERE, "Failed to update device", e);
-            throw new RuntimeException("Failed to update device", e);
+            return null;
         }
     }
 

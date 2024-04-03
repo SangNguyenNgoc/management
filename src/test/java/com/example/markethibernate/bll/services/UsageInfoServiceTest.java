@@ -17,7 +17,7 @@ public class UsageInfoServiceTest {
     }
     @Test
     void findById() {
-        UsageInfoEntity usageInfo = UsageInfoService.getInstance().findById(2L);
+        UsageInfoEntity usageInfo = UsageInfoService.getInstance().getById("2");
         System.out.println(usageInfo);
     }
     @Test
@@ -51,5 +51,23 @@ public class UsageInfoServiceTest {
     @Test
     void deleteById() {
         UsageInfoService.getInstance().deleteById(5L);
+    }
+
+    @Test
+    void checkIn() {
+        UsageInfoEntity result = UsageInfoService.getInstance().checkIn("12");
+        System.out.println(result.toString());
+    }
+
+    @Test
+    void borrowDevice() {
+        UsageInfoEntity result = UsageInfoService.getInstance().borrowDevice("10", "1000001");
+        System.out.println(result.toString());
+    }
+
+    @Test
+    void returnDevice() {
+        UsageInfoEntity result = UsageInfoService.getInstance().returnDevice("4");
+        System.out.println(result.toString());
     }
 }

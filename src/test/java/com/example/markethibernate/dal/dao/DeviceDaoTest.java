@@ -32,7 +32,7 @@ class DeviceDaoTest {
     }
     @Test
     void deleteDeviceById() {
-        if (DeviceDao.getInstance().findById(1000006) == null) {
+        if (DeviceDao.getInstance().findById(1000006L) == null) {
             System.out.println("Not found");
         } else {
             DeviceDao.getInstance().deleteDeviceById(1000006);
@@ -58,7 +58,7 @@ class DeviceDaoTest {
     }
     @Test
     void update() {
-       DeviceEntity device =  DeviceDao.getInstance().findById(1000005);
+       DeviceEntity device =  DeviceDao.getInstance().findById(1000005L);
        System.out.println("Pre update: " + device.toString());
          device.setName("Màn hình máy tính Acer");
          device.setDescription("Màn hình máy tính");

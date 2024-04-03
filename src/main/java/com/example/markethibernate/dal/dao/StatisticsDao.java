@@ -1,25 +1,30 @@
-package com.example.markethibernate.bll.services;
-import com.example.markethibernate.dal.dao.UsageInfoDao;
+package com.example.markethibernate.dal.dao;
+
 import com.example.markethibernate.dal.entities.PenalizeEntity;
 import com.example.markethibernate.utils.HibernateUtil;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-public class StatisticsService {
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class StatisticsDao {
     private final SessionFactory sessionFactory;
-    private static class StatisticsServiceHolder {
-        private static final StatisticsService INSTANCE = new StatisticsService();
-    }
-    public static StatisticsService getInstance() {
-        return StatisticsService.StatisticsServiceHolder.INSTANCE;
-    }
-    private StatisticsService() {
+
+    private static final Logger logger = Logger.getLogger(StatisticsDao.class.getName());
+
+    private StatisticsDao() {
         this.sessionFactory = HibernateUtil.getSessionFactory();
     }
+
+    public static StatisticsDao getInstance() {
+        return StatisticsDaoHolder.INSTANCE;
+    }
+
     public Long countPeopleCheckInBetween(LocalDateTime startTime, LocalDateTime endTime) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
@@ -31,7 +36,7 @@ public class StatisticsService {
             query.setParameter("endTime", endTime);
             return query.uniqueResult();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Query failure", e);
             return null;
         }
 
@@ -49,7 +54,7 @@ public class StatisticsService {
             Long result = query.uniqueResult();
             return result;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Query failure", e);
             return null;
         }
     }
@@ -66,7 +71,7 @@ public class StatisticsService {
             query.setParameter("endTime", endTime);
             return query.uniqueResult();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Query failure", e);
             return null;
         }
     }
@@ -80,7 +85,7 @@ public class StatisticsService {
             query.setParameter("processed", processed);
             return query.uniqueResult();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Query failure", e);
             return null;
         }
     }
@@ -92,8 +97,12 @@ public class StatisticsService {
             query.setParameter("processed", processed);
             return query.list();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Query failure", e);
             return new ArrayList<>();
         }
+    }
+
+    private static class StatisticsDaoHolder {
+        private static final StatisticsDao INSTANCE = new StatisticsDao();
     }
 }

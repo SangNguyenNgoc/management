@@ -1,18 +1,15 @@
 package com.example.markethibernate.bll.mappers;
 
-import com.example.markethibernate.bll.dtos.CreateDeviceDto;
+import com.example.markethibernate.bll.dtos.DeviceValidator;
 import com.example.markethibernate.dal.entities.DeviceEntity;
-import org.mapstruct.BeanMapping;
+import com.example.markethibernate.dal.entities.PenalizeEntity;
 import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper
 public interface DeviceMapper {
-    DeviceEntity toEntity(CreateDeviceDto createDeviceDto);
 
-    CreateDeviceDto toDto(DeviceEntity deviceEntity);
+    DeviceEntity toEntity(DeviceValidator deviceValidator);
 
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    DeviceEntity partialUpdate(CreateDeviceDto createDeviceDto, @MappingTarget DeviceEntity deviceEntity);
+
+
 }

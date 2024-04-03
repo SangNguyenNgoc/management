@@ -1,19 +1,16 @@
 package com.example.markethibernate.bll.Services;
 
-import com.example.markethibernate.bll.services.StatisticsService;
+import com.example.markethibernate.dal.dao.StatisticsDao;
 import com.example.markethibernate.dal.entities.PenalizeEntity;
-import com.example.markethibernate.dal.entities.PersonEntity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class StatisticsServiceTest {
 
-    private StatisticsService instance = StatisticsService.getInstance();
+    private StatisticsDao instance = StatisticsDao.getInstance();
 
     //- Số lượng thành viên vào khu học tập theo thời gian
     @Test

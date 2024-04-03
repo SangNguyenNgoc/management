@@ -1,6 +1,7 @@
 package com.example.markethibernate.dal.dao;
 
 import com.example.markethibernate.dal.entities.PersonEntity;
+import com.example.markethibernate.utils.AppUtil;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,6 +25,7 @@ class PersonDaoTest {
         PersonEntity addedPerson = personDao.addPerson(person);
 
         assertNotNull(addedPerson);
+        System.out.println(AppUtil.toJson(addedPerson));
 
     }
     @Test
@@ -45,7 +47,7 @@ class PersonDaoTest {
     }
     @Test
     public void testDeletePerson(){
-        PersonEntity deletePerson = personDao.deletePersonById(8);
+        PersonEntity deletePerson = personDao.deletePersonById(8L);
         assertNotNull(deletePerson);
     }
 }

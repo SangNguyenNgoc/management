@@ -30,7 +30,6 @@ public class PenalizeEntity {
     @Column(name = "status", nullable = false)
     private Boolean status;
 
-
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(
             name = "person_id",
