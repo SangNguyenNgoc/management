@@ -1,13 +1,17 @@
 package com.example.markethibernate.bll.services;
 
+import com.example.markethibernate.bll.dtos.DeviceValidator;
 import com.example.markethibernate.dal.dao.DeviceDao;
 import com.example.markethibernate.dal.entities.DeviceEntity;
+import com.example.markethibernate.utils.AppUtil;
+import com.example.markethibernate.utils.ValidatorUtil;
+
+import java.util.List;
+import java.util.logging.Logger;
 
 public class DeviceService {
 
-    private static class DeviceServiceHolder {
-        private static final DeviceService INSTANCE = new DeviceService();
-    }
+    private static final Logger logger = Logger.getLogger(DeviceService.class.getName());
 
     private DeviceService() {
     }
@@ -16,81 +20,78 @@ public class DeviceService {
         return DeviceServiceHolder.INSTANCE;
     }
 
+    public List<DeviceEntity> getAll() {
+        return DeviceDao.getInstance().findAll();
+    }
+
+    public DeviceEntity getById(String idString) {
+        Long id = AppUtil.parseId(idString);
+        if (id == null) {
+            return null;
+        }
+        return DeviceDao.getInstance().findById(id);
+    }
+
     public DeviceEntity createDevice(String name, String description, boolean status) {
-        if(name.isEmpty()) {
-            throw new IllegalArgumentException("Name is empty");
+        if (!checkName(name).isBlank()) {
+            return null;
         }
-        else if (description.isEmpty()) {
-            throw new IllegalArgumentException("Description is empty");
+        if (!checkDescription(description).isBlank()) {
+            return null;
         }
-        else if (name.length() > 255) {
-            throw new IllegalArgumentException("Name is too long");
-        }
-        else if (description.length() > 255) {
-            throw new IllegalArgumentException("Description is too long");
-        }
-        else if (name.length() < 5) {
-            throw new IllegalArgumentException("Name is too short");
-        }
-        else if (description.length() < 5) {
-            throw new IllegalArgumentException("Description is too short");
-        }
-        else {
-            DeviceEntity device = new DeviceEntity();
-            device.setName(name);
-            device.setDescription(description);
-            device.setStatus(status);
-
-            DeviceDao.getInstance().createDevice(device);
-            return device;
-        }
-    }
-    public boolean deleteDeviceById(Integer id) {
-        if (id == null || id <= 0) {
-            throw new IllegalArgumentException("Invalid ID: " + id);
-        }
-        else {
-            DeviceEntity device = DeviceDao.getInstance().findById(id);
-            if (device == null) {
-                throw new IllegalArgumentException("Device not found with ID: " + id);
-            }
-            else {
-                DeviceDao.getInstance().deleteDeviceById(id);
-            }
-        }
-        return true;
+        DeviceEntity device = new DeviceEntity();
+        device.setName(name);
+        device.setDescription(description);
+        device.setStatus(status);
+        DeviceDao.getInstance().createDevice(device);
+        return device;
     }
 
-    public DeviceEntity updateDevice(Integer id, String name, String description, boolean status) {
-        if(name.isEmpty()) {
-            throw new IllegalArgumentException("Name is empty");
+    public boolean deleteDeviceById(String idString) {
+        DeviceEntity device = getById(idString);
+        if (device == null) {
+            return false;
         }
-        else if (description.isEmpty()) {
-            throw new IllegalArgumentException("Description is empty");
-        }
-        else if (name.length() > 255) {
-            throw new IllegalArgumentException("Name is too long");
-        }
-        else if (description.length() > 255) {
-            throw new IllegalArgumentException("Description is too long");
-        }
-        else if (name.length() < 5) {
-            throw new IllegalArgumentException("Name is too short");
-        }
-        else if (description.length() < 5) {
-            throw new IllegalArgumentException("Description is too short");
-        }
-        else {
-            DeviceEntity device = DeviceDao.getInstance().findById(id);
-            device.setName(name);
-            device.setDescription(description);
-            device.setStatus(status);
+        return DeviceDao.getInstance().deleteDeviceById(AppUtil.parseId(idString));
+    }
 
-            DeviceDao.getInstance().updateDevice(device);
-            return device;
+    public DeviceEntity updateDevice(String idString, String name, String description) {
+        DeviceEntity device = getById(idString);
+        if (device == null) {
+            return null;
         }
+        if (!checkName(name).isBlank()) {
+            return null;
+        }
+        if (!checkDescription(description).isBlank()) {
+            return null;
+        }
+        device.setName(name);
+        device.setDescription(description);
+        DeviceDao.getInstance().updateDevice(device);
+        return device;
+    }
+
+    public String checkName(String name) {
+        return ValidatorUtil.validateField(
+                DeviceValidator.builder()
+                        .name(name)
+                        .build(),
+                "name"
+        );
+    }
+
+    public String checkDescription(String description) {
+        return ValidatorUtil.validateField(
+                DeviceValidator.builder()
+                        .description(description)
+                        .build(),
+                "description");
     }
 
 
+    private static class DeviceServiceHolder {
+        private static final DeviceService INSTANCE = new DeviceService();
+    }
 
 }

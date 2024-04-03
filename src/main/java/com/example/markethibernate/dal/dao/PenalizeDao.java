@@ -1,12 +1,15 @@
 package com.example.markethibernate.dal.dao;
 
+import com.example.markethibernate.dal.entities.DeviceEntity;
 import com.example.markethibernate.dal.entities.PenalizeEntity;
 
 import com.example.markethibernate.utils.HibernateUtil;
+import jakarta.persistence.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,6 +29,30 @@ public class PenalizeDao {
 
     public static PenalizeDao getInstance() {
         return PenalizeDao.PenalizeDaoHolder.INSTANCE;
+    }
+
+    public PenalizeEntity findById(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            Query query = session.createQuery("FROM PenalizeEntity d WHERE d.id = :id", PenalizeEntity.class);
+            query.setParameter("id", id);
+            var penalizes = query.getResultList();
+            if(!penalizes.isEmpty()) {
+                return (PenalizeEntity) penalizes.get(0);
+            } else {
+                return null;
+            }
+        }
+    }
+
+    public List<PenalizeEntity> findByPersonIsPenalize(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            List<PenalizeEntity> result = session.createQuery(
+                    "FROM PenalizeEntity p WHERE p.person.id = :id and p.status = true ",
+                    PenalizeEntity.class
+            ).list();
+            session.close();
+            return result;
+        }
     }
 
     public PenalizeEntity addPenalize(PenalizeEntity penalize) {

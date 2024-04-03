@@ -9,10 +9,13 @@ import org.hibernate.Transaction;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class UsageInfoDao {
 
     private final SessionFactory sessionFactory;
+
+    private static final Logger logger = Logger.getLogger(PersonDao.class.getName());
 
     private static class UsageInfoDaoHolder {
         private static final UsageInfoDao INSTANCE = new UsageInfoDao();
@@ -33,7 +36,7 @@ public class UsageInfoDao {
             session.close();
             return usageInfos;
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.log(Level.SEVERE, "Query failure", ex);
             return new ArrayList<>();
         }
     }
@@ -44,7 +47,7 @@ public class UsageInfoDao {
             session.close();
             return usageInfo;
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.log(Level.SEVERE, "Query failure", ex);
             return null;
         }
     }
@@ -60,7 +63,7 @@ public class UsageInfoDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Query failure", e);
             return null;
         }
     }
@@ -77,7 +80,7 @@ public class UsageInfoDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Query failure", e);
             return null;
         }
     }
@@ -94,7 +97,7 @@ public class UsageInfoDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Query failure", e);
             return false;
         }
     }
@@ -111,7 +114,7 @@ public class UsageInfoDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Query failure", e);
             return false;
         }
     }
