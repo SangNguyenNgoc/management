@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="vBoxParent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="1000.0" spacing="15.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.markethibernate.gui.controller.ContentController">
+   <children>
+      <HBox fx:id="toolbar" prefHeight="32.0" prefWidth="920.0">
+         <children>
+            <HBox fx:id="leftToolbar" prefHeight="32.0" prefWidth="460.0">
+               <children>
+                  <Button fx:id="leftButton" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="32.0" prefWidth="90.0" style="-fx-background-color: #F0F0F0;" text="Danh sách" textFill="#909090">
+                     <font>
+                        <Font size="13.0" />
+                     </font></Button>
+               </children></HBox>
+            <HBox fx:id="rightToolbar" nodeOrientation="RIGHT_TO_LEFT" prefHeight="32.0" prefWidth="460.0" />
+         </children>
+      </HBox>
+   </children>
+   <padding>
+      <Insets left="40.0" right="40.0" top="15.0" />
+   </padding>
+</VBox>

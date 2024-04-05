@@ -31,7 +31,7 @@ public class PersonDao {
 
     public List<PersonEntity> findAll() {
         try (Session session = sessionFactory.openSession()) {
-            List<PersonEntity> persons = session.createQuery("FROM PersonEntity ", PersonEntity.class).list();
+            List<PersonEntity> persons = session.createQuery("FROM PersonEntity p where p.status = true", PersonEntity.class).list();
             session.close();
             return persons;
         }
@@ -39,7 +39,7 @@ public class PersonDao {
 
     public PersonEntity findById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            Query query = session.createQuery("FROM PersonEntity p WHERE p.id = :id", PersonEntity.class);
+            Query query = session.createQuery("FROM PersonEntity p WHERE p.id = :id and p.status = true", PersonEntity.class);
             query.setParameter("id", id);
             var persons = query.getResultList();
             if(!persons.isEmpty()) {

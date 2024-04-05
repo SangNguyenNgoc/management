@@ -34,7 +34,7 @@ public class DeviceDao {
 
     public List<DeviceEntity> findAll() {
         try (Session session = sessionFactory.openSession()) {
-            List<DeviceEntity> devices = session.createQuery("FROM DeviceEntity ", DeviceEntity.class).list();
+            List<DeviceEntity> devices = session.createQuery("FROM DeviceEntity d where d.status = true", DeviceEntity.class).list();
             session.close();
             return devices;
         }
@@ -42,7 +42,7 @@ public class DeviceDao {
 
     public DeviceEntity findById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            Query query = session.createQuery("FROM DeviceEntity d WHERE d.id = :id", DeviceEntity.class);
+            Query query = session.createQuery("FROM DeviceEntity d WHERE d.id = :id and d.status = true", DeviceEntity.class);
             query.setParameter("id", id);
             var devices = query.getResultList();
             if(!devices.isEmpty()) {

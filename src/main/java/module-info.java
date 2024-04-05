@@ -15,13 +15,13 @@ module com.example.markethibernate {
 
     opens com.example.markethibernate to javafx.fxml;
     opens com.example.markethibernate.dal.entities to org.hibernate.orm.core, gson, org.hibernate.validator;
-    opens com.example.markethibernate.gui to javafx.fxml;
+    opens com.example.markethibernate.gui.controller to javafx.fxml;
 
 
     exports com.example.markethibernate;
-    exports com.example.markethibernate.gui;
     exports com.example.markethibernate.bll.dtos;
     exports com.example.markethibernate.dal.entities;
     exports com.example.markethibernate.bll.mappers;
     opens com.example.markethibernate.bll.dtos to gson, org.hibernate.orm.core, org.hibernate.validator;
+    exports com.example.markethibernate.gui.controller;
 }
