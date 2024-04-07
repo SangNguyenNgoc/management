@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="320.0" prefWidth="915.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.markethibernate.view.PenaltyForm">
+    <children>
+        <Button fx:id="penaltyUpdateButton" layoutX="394.0" layoutY="258.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="130.0" style="-fx-background-color: #2563EB;" text="Cập nhật" textFill="WHITE">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </Button>
+        <Label layoutX="29.0" layoutY="87.0" style="-fx-text-fill: #000000; -fx-opacity: 60%;" text="Người dùng :">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
+        <Label layoutX="30.0" layoutY="138.0" style="-fx-text-fill: #000000; -fx-opacity: 60%;" text="Ngày giờ :">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
+        <Label layoutX="31.0" layoutY="188.0" style="-fx-text-fill: #000000; -fx-opacity: 60%;" text="Phạt :">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
+        <TextField fx:id="userInput" layoutX="132.0" layoutY="84.0" prefHeight="30.0" prefWidth="300.0">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </TextField>
+        <TextField fx:id="penaltyInput" layoutX="134.0" layoutY="185.0" prefHeight="30.0" prefWidth="300.0">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </TextField>
+        <Label layoutX="457.0" layoutY="86.0" style="-fx-text-fill: #000000; -fx-opacity: 60%;" text="Điện thoại :">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
+        <Label layoutX="458.0" layoutY="137.0" style="-fx-text-fill: #000000; -fx-opacity: 60%;" text="Trạng thái :">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
+        <TextField fx:id="statusInput" layoutX="584.0" layoutY="134.0" prefHeight="30.0" prefWidth="300.0">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </TextField>
+        <TextField fx:id="numberPhoneInput" layoutX="583.0" layoutY="82.0" prefHeight="30.0" prefWidth="300.0">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </TextField>
+        <TextField fx:id="timeInput" layoutX="133.0" layoutY="136.0" prefHeight="30.0" prefWidth="300.0">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </TextField>
+        <Label layoutX="459.0" layoutY="189.0" style="-fx-text-fill: #000000; -fx-opacity: 60%;" text="Phí :">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
+        <TextField fx:id="feeInput" layoutX="585.0" layoutY="185.0" prefHeight="30.0" prefWidth="300.0">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </TextField>
+        <Label fx:id="userValidate" layoutX="135.0" layoutY="114.0" prefHeight="11.0" prefWidth="300.0" text="" textFill="RED" />
+        <Label fx:id="penaltyValidate" layoutX="135.0" layoutY="215.0" prefHeight="11.0" prefWidth="300.0" text="" textFill="RED" />
+        <Label fx:id="statusValidate" layoutX="585.0" layoutY="166.0" prefHeight="11.0" prefWidth="300.0" text="" textFill="RED" />
+        <Label fx:id="timeValidate" layoutX="135.0" layoutY="166.0" prefHeight="11.0" prefWidth="300.0" text="" textFill="RED" />
+        <Label fx:id="numberPhoneValidate" layoutX="585.0" layoutY="114.0" prefHeight="18.0" prefWidth="300.0" text="" textFill="RED" />
+        <Label fx:id="feeValidate" layoutX="585.0" layoutY="215.0" prefHeight="11.0" prefWidth="300.0" text="" textFill="RED" />
+        <Pane layoutX="31.0" prefHeight="65.0" prefWidth="851.0" style="-fx-border-color: #E6E6E6; -fx-border-width: 0 0 1 0;">
+            <children>
+                <Label layoutY="23.0" text="Penalty Detail">
+                    <font>
+                        <Font name="Arial Bold" size="16.0" />
+                    </font>
+                </Label>
+                <Label alignment="CENTER" contentDisplay="RIGHT" layoutX="721.0" layoutY="23.0" prefHeight="20.0" prefWidth="130.0" text="Xóa" textAlignment="RIGHT" textFill="#e11d48">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+            </children>
+        </Pane>
+    </children>
+
+</AnchorPane>
