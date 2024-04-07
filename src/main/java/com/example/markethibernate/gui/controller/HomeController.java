@@ -1,31 +1,27 @@
 package com.example.markethibernate.gui.controller;
 
 import com.example.markethibernate.HelloApplication;
+import com.example.markethibernate.gui.state.State;
+import com.example.markethibernate.gui.state.impl.*;
 import com.example.markethibernate.gui.utils.Component;
-import com.example.markethibernate.gui.utils.ContentState;
-import com.example.markethibernate.utils.HibernateUtil;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class HelloController implements Initializable {
+public class HomeController implements Initializable {
+    @FXML
+    private Button checkInButton;
+    @FXML
+    private ImageView checkInImage;
     @FXML
     private Pane content;
     @FXML
@@ -72,16 +68,19 @@ public class HelloController implements Initializable {
         deviceButton.getStyleClass().clear();
         penaltyButton.getStyleClass().clear();
         usageButton.getStyleClass().clear();
+        checkInButton.getStyleClass().clear();
 
         personButton.getStyleClass().add("layout-button");
         deviceButton.getStyleClass().add("layout-button");
         penaltyButton.getStyleClass().add("layout-button");
         usageButton.getStyleClass().add("layout-button");
+        checkInButton.getStyleClass().add("layout-button");
 
         personImage.setImage(new Image(HelloApplication.class.getResource("image/person.png").toString()));
         deviceImage.setImage(new Image(HelloApplication.class.getResource("image/device.png").toString()));
         penaltyImage.setImage(new Image(HelloApplication.class.getResource("image/penalty.png").toString()));
         usageImage.setImage(new Image(HelloApplication.class.getResource("image/usage.png").toString()));
+        checkInImage.setImage(new Image(HelloApplication.class.getResource("image/user-check.png").toString()));
     }
 
     private void resetButtonStyles(Button button, ImageView imageView, String urlImg, String buttonName) {
@@ -98,28 +97,40 @@ public class HelloController implements Initializable {
         // Bắt sự kiện khi khởi tạo controller
         personButton.setOnAction(event -> {
             handleButtonClick(personButton, personImage, "image/person-active.png");
-            initContent(ContentState.LIST_PERSONS);
+            initContent(new ListPersonState(this));
         });
         deviceButton.setOnAction(event -> {
             handleButtonClick(deviceButton, deviceImage, "image/device-active.png");
-            initContent(ContentState.LIST_DEVICES);
+            initContent(new ListDeviceState(this));
         });
-        penaltyButton.setOnAction(event -> handleButtonClick(penaltyButton, penaltyImage, "image/penalty-active.png"));
-        usageButton.setOnAction(event -> handleButtonClick(usageButton, usageImage, "image/usage-active.png"));
+        penaltyButton.setOnAction(event -> {
+            handleButtonClick(penaltyButton, penaltyImage, "image/penalty-active.png");
+            initContent(new ListPenalizeState(this));
+        });
+        usageButton.setOnAction(event -> {
+            handleButtonClick(usageButton, usageImage, "image/usage-active.png");
+            initContent(new ListUsageInfoState(this));
+        });
+        checkInButton.setOnAction(event -> {
+            handleButtonClick(checkInButton, checkInImage, "image/user-check-active.png");
+            initContent(new ListCheckInState(this));
+        });
 
         personButton.setOnMouseEntered(event -> handleButtonHover(personButton, personImage, "image/person-active.png"));
         deviceButton.setOnMouseEntered(event -> handleButtonHover(deviceButton, deviceImage, "image/device-active.png"));
         penaltyButton.setOnMouseEntered(event -> handleButtonHover(penaltyButton, penaltyImage, "image/penalty-active.png"));
         usageButton.setOnMouseEntered(event -> handleButtonHover(usageButton, usageImage, "image/usage-active.png"));
+        checkInButton.setOnMouseEntered(event -> handleButtonHover(checkInButton, checkInImage, "image/user-check-active.png"));
 
         personButton.setOnMouseExited(event -> resetButtonStyles(personButton, personImage, "image/person.png","personButton"));
         deviceButton.setOnMouseExited(event -> resetButtonStyles(deviceButton, deviceImage, "image/device.png","deviceButton"));
         penaltyButton.setOnMouseExited(event -> resetButtonStyles(penaltyButton, penaltyImage, "image/penalty.png","penaltyButton"));
         usageButton.setOnMouseExited(event -> resetButtonStyles(usageButton, usageImage, "image/usage.png","usageButton"));
-        initContent(ContentState.LIST_PERSONS);
+        checkInButton.setOnMouseExited(event -> resetButtonStyles(checkInButton, checkInImage, "image/user-check.png","checkInButton"));
+        initContent(new ListPersonState(this));
     }
 
-    public void initContent(ContentState contentState) {
+    public void initContent(State state) {
         try {
             content.getChildren().clear();
             FXMLLoader loader = new FXMLLoader(
@@ -127,7 +138,7 @@ public class HelloController implements Initializable {
             Parent root = null;
             root = loader.load();
             ContentController controller = loader.getController();
-            controller.init(contentState);
+            controller.initContent(state);
             content.getChildren().add(root);
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -17,7 +17,7 @@
                         <Font size="13.0" />
                      </font></Button>
                </children></HBox>
-            <HBox fx:id="rightToolbar" nodeOrientation="RIGHT_TO_LEFT" prefHeight="32.0" prefWidth="460.0" />
+            <HBox fx:id="rightToolbar" spacing="10" nodeOrientation="RIGHT_TO_LEFT" prefHeight="32.0" prefWidth="460.0" />
          </children>
       </HBox>
    </children>

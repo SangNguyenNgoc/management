@@ -31,6 +31,14 @@ public class PenalizeDao {
         return PenalizeDao.PenalizeDaoHolder.INSTANCE;
     }
 
+    public List<PenalizeEntity> findAll() {
+        try (Session session = sessionFactory.openSession()) {
+            List<PenalizeEntity> penalizes = session.createQuery("FROM PenalizeEntity p join fetch p.person", PenalizeEntity.class).list();
+            session.close();
+            return penalizes;
+        }
+    }
+
     public PenalizeEntity findById(Long id) {
         try (Session session = sessionFactory.openSession()) {
             Query query = session.createQuery("FROM PenalizeEntity d WHERE d.id = :id", PenalizeEntity.class);
@@ -46,10 +54,11 @@ public class PenalizeDao {
 
     public List<PenalizeEntity> findByPersonIsPenalize(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            List<PenalizeEntity> result = session.createQuery(
+            Query query = session.createQuery(
                     "FROM PenalizeEntity p WHERE p.person.id = :id and p.status = true ",
-                    PenalizeEntity.class
-            ).list();
+                    PenalizeEntity.class);
+            query.setParameter("id", id);
+            List<PenalizeEntity> result = query.getResultList();
             session.close();
             return result;
         }

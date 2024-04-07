@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: #F0F0F0;" stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.markethibernate.gui.controller.HelloController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: #F0F0F0;" stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.markethibernate.gui.controller.HomeController">
     <children>
         <Pane prefHeight="700.0" prefWidth="200.0" style="-fx-background-color: #ffffff; -fx-border-image-width: 0 1 0 0; -fx-border-color: #F0F0F0;">
             <children>
@@ -47,7 +47,7 @@
                            </image>
                         </ImageView>
                      </graphic></Button>
-                        <Button fx:id="usageButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" layoutY="163.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="140.0" styleClass="layout-button" text="Usage">
+                        <Button fx:id="usageButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" layoutY="162.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="140.0" styleClass="layout-button" text="Usage">
                      <font>
                         <Font name="Georgia Bold" size="14.0" />
                      </font>
@@ -69,6 +69,18 @@
                            </image>
                         </ImageView>
                      </graphic></Button>
+                  <Button fx:id="checkInButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" layoutY="216.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="140.0" styleClass="layout-button" text="Check in">
+                     <font>
+                        <Font name="Georgia Bold" size="14.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fx:id="checkInImage" fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../image/user-check.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                     </children>
                 </Pane>
             </children>

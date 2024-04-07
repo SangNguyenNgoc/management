@@ -24,6 +24,11 @@ public class UsageInfoService {
         return UsageInfoDao.getInstance().findAll();
     }
 
+    public List<UsageInfoEntity> findAllCheckIn() {
+        return UsageInfoDao.getInstance().findAllCheckIn();
+    }
+
+
     public UsageInfoEntity getById(String idString) {
         Long id = AppUtil.parseId(idString);
         if (id == null) {

@@ -10,6 +10,7 @@ import com.example.markethibernate.dal.entities.PersonEntity;
 import com.example.markethibernate.utils.AppUtil;
 
 import java.util.List;
+import java.util.Optional;
 
 public class PenalizeService {
 
@@ -22,6 +23,10 @@ public class PenalizeService {
 
     public static PenalizeService getInstance() {
         return PenalizeServiceHolder.INSTANCE;
+    }
+
+    public List<PenalizeEntity> getALl() {
+        return PenalizeDao.getInstance().findAll();
     }
 
     public PenalizeEntity getById(String idString) {
@@ -39,6 +44,15 @@ public class PenalizeService {
         }
         List<PenalizeEntity> penalizes = PenalizeDao.getInstance().findByPersonIsPenalize(AppUtil.parseId(userId));
         return !penalizes.isEmpty();
+    }
+
+    public Optional<PenalizeEntity> updateStatus(String idString) {
+        PenalizeEntity penalize = getById(idString);
+        if(penalize == null) {
+            return Optional.empty();
+        }
+        penalize.setStatus(!penalize.getStatus());
+        return Optional.ofNullable(PenalizeDao.getInstance().updatePenalize(penalize));
     }
 
 }

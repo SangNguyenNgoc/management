@@ -32,7 +32,22 @@ public class UsageInfoDao {
 
     public List<UsageInfoEntity> findAll() {
         try (Session session = sessionFactory.openSession()) {
-            List<UsageInfoEntity> usageInfos = session.createQuery("FROM  UsageInfoEntity", UsageInfoEntity.class).list();
+            List<UsageInfoEntity> usageInfos = session.createQuery(
+                    "FROM  UsageInfoEntity u join fetch u.person join fetch u.device",
+                    UsageInfoEntity.class).list();
+            session.close();
+            return usageInfos;
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, "Query failure", ex);
+            return new ArrayList<>();
+        }
+    }
+
+    public List<UsageInfoEntity> findAllCheckIn() {
+        try (Session session = sessionFactory.openSession()) {
+            List<UsageInfoEntity> usageInfos = session.createQuery(
+                    "FROM  UsageInfoEntity u join fetch u.person where u.device = null order by u.checkinTime desc ",
+                    UsageInfoEntity.class).list();
             session.close();
             return usageInfos;
         } catch (Exception ex) {

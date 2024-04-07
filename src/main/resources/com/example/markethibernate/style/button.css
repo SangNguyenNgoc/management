@@ -1,0 +1,29 @@
+.green-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #059669;
+    -fx-font-size: 14;
+    -fx-background-radius: 8;
+    -fx-border-color: #059669;
+    -fx-border-radius: 8;
+    -fx-border-width: 2
+}
+
+.green-button-active {
+    -fx-background-color: #059669;
+    -fx-text-fill: white;
+    -fx-font-size: 14;
+    -fx-background-radius: 8;
+    -fx-border-color: #059669;
+    -fx-border-radius: 8;
+    -fx-border-width: 2
+}
+
+.blue-button {
+    -fx-background-color: #2563EB;
+    -fx-border-color: #2563EB;
+    -fx-text-fill: white;
+    -fx-font-size: 14;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-width: 2
+}
