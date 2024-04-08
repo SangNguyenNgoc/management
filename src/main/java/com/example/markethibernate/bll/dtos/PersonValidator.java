@@ -15,6 +15,10 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class PersonValidator implements Serializable {
 
+    @NotBlank(message = "mã thành viên không được trống")
+    @Pattern(message = "mã thành viên chỉ chứa tối đa 10 kí tự, và chỉ được là số", regexp = "\\d{1,10}")
+    String id;
+
     @NotBlank(message = "tên người dùng không được trống")
     @Size(message = "tên người dùng chỉ chứa tối đa 50 kí tự", min = 0, max = 50)
     String name;

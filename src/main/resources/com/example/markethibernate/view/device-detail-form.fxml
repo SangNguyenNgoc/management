@@ -7,7 +7,8 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="230.0" prefWidth="915.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.markethibernate.view.DeviceDetailForm">
+<?import javafx.scene.layout.HBox?>
+<AnchorPane prefHeight="230.0" prefWidth="915.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.markethibernate.gui.controller.DeviceDetailFormController">
     <children>
         <Button fx:id="deviceUpdateButton" layoutX="392.0" layoutY="167.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="130.0" style="-fx-background-color: #2563EB;" text="Cập nhật" textFill="WHITE">
             <font>
@@ -36,20 +37,21 @@
         </TextField>
         <Label fx:id="nameValidate" layoutX="135.0" layoutY="114.0" prefHeight="11.0" prefWidth="300.0" textFill="RED" />
         <Label fx:id="descriptionValidate" layoutX="585.0" layoutY="114.0" prefHeight="18.0" prefWidth="300.0" textFill="RED" />
-        <Pane layoutX="31.0" prefHeight="65.0" prefWidth="851.0" style="-fx-border-color: #E6E6E6; -fx-border-width: 0 0 1 0;">
+        <HBox fx:id="header" layoutX="31.0" prefHeight="50.0" prefWidth="852.0" style="-fx-border-color: #EEEEEE; -fx-border-width: 0 0 2 0;">
             <children>
-                <Label layoutY="23.0" text="Device Detail">
-                    <font>
-                        <Font name="Arial Bold" size="16.0" />
-                    </font>
-                </Label>
-                <Label alignment="CENTER" contentDisplay="RIGHT" layoutX="721.0" layoutY="23.0" prefHeight="20.0" prefWidth="130.0" text="Xóa" textAlignment="RIGHT" textFill="#e11d48">
-                    <font>
-                        <Font size="14.0" />
-                    </font>
-                </Label>
+                <HBox fx:id="leftHeader" prefHeight="40.0" prefWidth="426.0">
+                    <children>
+                        <Label prefHeight="53.0" prefWidth="84.0" text="Device Detail">
+                            <font>
+                                <Font name="Arial Bold" size="16.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+                <HBox fx:id="rightHeader" nodeOrientation="RIGHT_TO_LEFT" prefHeight="100.0" prefWidth="426.0">
+                </HBox>
             </children>
-        </Pane>
+        </HBox>
     </children>
 
 </AnchorPane>

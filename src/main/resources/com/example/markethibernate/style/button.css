@@ -27,3 +27,18 @@
     -fx-border-radius: 8;
     -fx-border-width: 2
 }
+
+.white-button {
+    -fx-background-color: #F0F0F0;
+    -fx-text-fill: #909090;
+    -fx-font-size: 14;
+}
+
+.yellow-button {
+    -fx-background-color: #FFA412;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 14;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-width: 2
+}

@@ -46,7 +46,7 @@ public class ListDeviceState extends AbstractState implements State {
             List<DeviceEntity> devices = DeviceService.getInstance().getAll();
             if (devices.isEmpty()) {
                 EmptyPane emptyPane = new EmptyPane();
-                content.getChildren().add(emptyPane.create("Chưa có dữ liệu!"));
+                tableViewController.contentTable.getChildren().add(emptyPane.create("Chưa có dữ liệu!"));
                 return;
             }
             devices.forEach(item -> {
@@ -60,6 +60,7 @@ public class ListDeviceState extends AbstractState implements State {
                 hbox.setOnMouseClicked(event -> {
                     System.out.println(item.toString());
                 });
+                createTableHover(hbox);
                 tableViewController.contentTable.getChildren().add(hbox);
             });
         } catch (IOException e) {
@@ -68,7 +69,7 @@ public class ListDeviceState extends AbstractState implements State {
     }
 
     @Override
-    public void initAddButton(HBox leftToolbar, HBox rightToolbar) {
+    public void initButton(HBox leftToolbar, HBox rightToolbar) {
         Button button = createButton(ButtonType.BLUE_BUTTON, "Tạo mới");
         button.setPrefSize(90,25);
         rightToolbar.getChildren().add(button);

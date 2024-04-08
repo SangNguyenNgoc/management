@@ -49,10 +49,11 @@ public class PersonService {
         return PersonDao.getInstance().findById(id);
     }
 
-    public PersonEntity addPerson(String name, String email, String password,
+    public PersonEntity addPerson(String id, String name, String email, String password,
                                   String department, String profession, String phoneNumber
     ) {
         PersonValidator personValidator = PersonValidator.builder()
+                .id(id)
                 .name(name)
                 .email(email)
                 .password(password)
@@ -61,6 +62,9 @@ public class PersonService {
                 .phoneNumber(phoneNumber)
                 .build();
         if (!ValidatorUtil.validateObject(personValidator).isBlank()) {
+            return null;
+        }
+        if(!checkEmailTaken(email).isBlank()) {
             return null;
         }
         PersonEntity person = personMapper.toEntity(personValidator);
@@ -105,6 +109,19 @@ public class PersonService {
         return PersonDao.getInstance().deletePersonById(AppUtil.parseId(idString));
     }
 
+    public String checkId(String id) {
+        String validate = ValidatorUtil.validateField(
+                PersonValidator.builder()
+                        .id(id)
+                        .build(),
+                "id"
+        );
+        if(validate.isBlank()) {
+            validate += checkIdTaken(id);
+        }
+        return validate;
+    }
+
     public String checkName(String name) {
         return ValidatorUtil.validateField(
                 PersonValidator.builder()
@@ -115,16 +132,27 @@ public class PersonService {
     }
 
     public String checkEmail(String email) {
-        return ValidatorUtil.validateField(
+        String validate = ValidatorUtil.validateField(
                 PersonValidator.builder()
                         .email(email)
                         .build(),
                 "email");
+        if(validate.isBlank()) {
+            validate += checkEmailTaken(email);
+        }
+        return validate;
     }
 
     public String checkEmailTaken(String email) {
         if(PersonDao.getInstance().findByEmail(email) != null) {
             return "Email đã được sử dụng";
+        }
+        return "";
+    }
+
+    public String checkIdTaken(String id) {
+        if(getById(id) != null) {
+            return "Mã thành viên trùng khớp";
         }
         return "";
     }

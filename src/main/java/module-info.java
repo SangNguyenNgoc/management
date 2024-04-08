@@ -24,4 +24,6 @@ module com.example.markethibernate {
     exports com.example.markethibernate.bll.mappers;
     opens com.example.markethibernate.bll.dtos to gson, org.hibernate.orm.core, org.hibernate.validator;
     exports com.example.markethibernate.gui.controller;
+    exports com.example.markethibernate.gui.utils;
+    opens com.example.markethibernate.gui.utils to javafx.fxml;
 }

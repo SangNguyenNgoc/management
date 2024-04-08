@@ -53,7 +53,7 @@ public class ListCheckInState  extends AbstractState implements State {
             List<UsageInfoEntity> checkInList = UsageInfoService.getInstance().findAllCheckIn();
             if (checkInList.isEmpty()) {
                 EmptyPane emptyPane = new EmptyPane();
-                content.getChildren().add(emptyPane.create("Chưa có dữ liệu!"));
+                tableViewController.contentTable.getChildren().add(emptyPane.create("Chưa có dữ liệu!"));
                 return;
             }
             checkInList.forEach(item -> {
@@ -68,6 +68,7 @@ public class ListCheckInState  extends AbstractState implements State {
                 hbox.setOnMouseClicked(event -> {
                     System.out.println(item.getId());
                 });
+                createTableHover(hbox);
                 tableViewController.contentTable.getChildren().add(hbox);
             });
         } catch (IOException e) {
@@ -76,7 +77,7 @@ public class ListCheckInState  extends AbstractState implements State {
     }
 
     @Override
-    public void initAddButton(HBox leftToolbar, HBox rightToolbar) {
+    public void initButton(HBox leftToolbar, HBox rightToolbar) {
         Button button = createButton(ButtonType.BLUE_BUTTON, "Check in");
         button.setPrefSize(90,25);
         rightToolbar.getChildren().add(button);

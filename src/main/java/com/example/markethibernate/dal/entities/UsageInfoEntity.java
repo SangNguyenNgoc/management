@@ -21,6 +21,9 @@
         @Column(name = "checkin_time", nullable = true)
         private LocalDateTime checkinTime;
 
+        @Column(name = "booking_time", nullable = true)
+        private LocalDateTime bookingTime;
+
         @Column(name = "borrow_time", nullable = true)
         private LocalDateTime borrowTime;
 

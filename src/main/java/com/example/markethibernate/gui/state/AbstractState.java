@@ -90,4 +90,14 @@ public abstract class AbstractState {
         return button;
     }
 
+    public void createTableHover(HBox hBox) {
+        hBox.setOnMouseEntered(event -> {
+            hBox.setStyle("-fx-background-color: #F5F5F5; -fx-background-radius: 5");
+            hBox.setCursor(Cursor.HAND);
+        });
+        hBox.setOnMouseExited(event -> {
+            hBox.setStyle("-fx-background-color: #FFFFFF");
+        });
+    }
+
 }

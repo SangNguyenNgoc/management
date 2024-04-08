@@ -15,6 +15,7 @@ class PersonServiceTest {
     @Test
     public void testAddPerson() {
         PersonEntity addedPerson = PersonService.getInstance().addPerson(
+                "3121410417",
                 "Tony Start",
                 "ironman343@gmail.com",
                 "123456789",

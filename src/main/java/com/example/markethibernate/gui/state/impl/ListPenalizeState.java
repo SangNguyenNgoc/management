@@ -58,7 +58,7 @@ public class ListPenalizeState extends AbstractState implements State {
             List<PenalizeEntity> penalizes = PenalizeService.getInstance().getALl();
             if (penalizes.isEmpty()) {
                 EmptyPane emptyPane = new EmptyPane();
-                content.getChildren().add(emptyPane.create("Chưa có dữ liệu!"));
+                tableViewController.contentTable.getChildren().add(emptyPane.create("Chưa có dữ liệu!"));
                 return;
             }
             penalizes.forEach(item -> {
@@ -75,6 +75,7 @@ public class ListPenalizeState extends AbstractState implements State {
                 hbox.setOnMouseClicked(event -> {
                     System.out.println(item.getId());
                 });
+                createTableHover(hbox);
                 tableViewController.contentTable.getChildren().add(hbox);
             });
         } catch (IOException e) {
@@ -83,29 +84,27 @@ public class ListPenalizeState extends AbstractState implements State {
     }
 
     @Override
-    public void initAddButton(HBox leftToolbar, HBox rightToolbar) {
+    public void initButton(HBox leftToolbar, HBox rightToolbar) {
 
     }
 
     private VBox initStatus(PenalizeEntity penalize) {
-        VBox label = new VBox();
-        label.setPrefWidth(120.0);
-        label.setAlignment(Pos.BASELINE_CENTER);
+        VBox vBox = new VBox();
+        vBox.setPrefWidth(120.0);
+        vBox.setAlignment(Pos.CENTER);
         Button btn = new Button(penalize.getStatus() ? "Đang thi hành" : "Đã hoàn thành");
         btn.setBackground(Background.fill(Color.WHITE));
-        btn.setPrefWidth(100);
+        btn.setPrefSize(100, 30);
         if (penalize.getStatus()) {
-            btn.setStyle("-fx-text-fill: #cd4242; -fx-border-color: #cd4242; -fx-border-radius: 6");
+            btn.setStyle("-fx-text-fill: #cd4242; -fx-border-color: #cd4242; -fx-border-radius: 6; -fx-border-width: 2");
         } else {
-            btn.setStyle("-fx-text-fill: green; -fx-border-color: green; -fx-border-radius: 6");
+            btn.setStyle("-fx-text-fill: green; -fx-border-color: green; -fx-border-radius: 6; -fx-border-width: 2");
         }
         btn.setOnMouseEntered(event -> {
             btn.setUnderline(true);
             btn.setCursor(Cursor.HAND);
         });
-        btn.setOnMouseExited(event -> {
-            btn.setUnderline(false);
-        });
+        btn.setOnMouseExited(event -> btn.setUnderline(false));
         btn.setOnMouseClicked(event -> {
             Optional<PenalizeEntity> penalizeEntity = PenalizeService.getInstance().updateStatus(penalize.getId().toString());
             if (penalizeEntity.isEmpty()) {
@@ -113,8 +112,8 @@ public class ListPenalizeState extends AbstractState implements State {
             }
             refresh();
         });
-        label.getChildren().add(btn);
-        return label;
+        vBox.getChildren().add(btn);
+        return vBox;
     }
 
     @Override

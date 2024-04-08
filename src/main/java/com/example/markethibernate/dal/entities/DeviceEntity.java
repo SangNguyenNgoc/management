@@ -14,8 +14,7 @@ import java.util.Set;
 @Table(name = "devices")
 public class DeviceEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, length = 20)
     private Long id;
 
     @Column(name = "name", length = 100, nullable = false)

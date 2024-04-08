@@ -8,7 +8,9 @@ import java.util.HashMap;
 public enum ButtonType {
 
     GREEN_BUTTON("green-button", "green-button-active"),
-    BLUE_BUTTON("blue-button", "blue-button");
+    BLUE_BUTTON("blue-button", "blue-button"),
+    YELLOW_BUTTON("yellow-button", "yellow-button"),
+    WHITE_BUTTON("white-button","white-button");
 
 
     private final String normalStyle;
