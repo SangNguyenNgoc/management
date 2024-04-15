@@ -4,6 +4,8 @@ import com.example.markethibernate.dal.entities.PersonEntity;
 import com.example.markethibernate.utils.AppUtil;
 import org.junit.jupiter.api.*;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class PersonDaoTest {
@@ -49,5 +51,18 @@ class PersonDaoTest {
     public void testDeletePerson(){
         PersonEntity deletePerson = personDao.deletePersonById(8L);
         assertNotNull(deletePerson);
+    }
+
+    @Test
+    void findByYear() {
+        List<PersonEntity> result = PersonDao.getInstance().findByYear(22L);
+        result.forEach(item -> {
+            System.out.println(item.toString());
+        });
+    }
+
+    @Test
+    void deletePersonByYear() {
+        System.out.println(PersonDao.getInstance().deletePersonByYear(22L));
     }
 }

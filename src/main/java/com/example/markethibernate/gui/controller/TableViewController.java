@@ -6,16 +6,25 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import lombok.Getter;
 
+@Getter
 public class TableViewController {
 
     @FXML
-    public Label titleTable;
+    private Label titleTable;
     @FXML
-    public HBox headerTable;
+    private HBox headerTable;
     @FXML
-    public VBox contentTable;
+    private VBox contentTable;
     @FXML
-    public ScrollPane scrollPane;
+    private ScrollPane scrollPane;
+
+    @FXML
+    private HBox rightHeader;
+
+    public void initTitle(String text) {
+        titleTable.setText(text);
+    }
 
 }

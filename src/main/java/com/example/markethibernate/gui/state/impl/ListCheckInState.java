@@ -48,12 +48,12 @@ public class ListCheckInState  extends AbstractState implements State {
             root = loader.load();
             TableViewController tableViewController = loader.getController();
             content.getChildren().add(root);
-            tableViewController.titleTable.setText("Lịch sử vào");
-            createTableHeader(CHECKIN_HEADER, tableViewController.headerTable);
+            tableViewController.initTitle("Lịch sử vào");
+            createTableHeader(CHECKIN_HEADER, tableViewController.getHeaderTable());
             List<UsageInfoEntity> checkInList = UsageInfoService.getInstance().findAllCheckIn();
             if (checkInList.isEmpty()) {
                 EmptyPane emptyPane = new EmptyPane();
-                tableViewController.contentTable.getChildren().add(emptyPane.create("Chưa có dữ liệu!"));
+                tableViewController.getContentTable().getChildren().add(emptyPane.create("Chưa có dữ liệu!"));
                 return;
             }
             checkInList.forEach(item -> {
@@ -69,7 +69,7 @@ public class ListCheckInState  extends AbstractState implements State {
                     System.out.println(item.getId());
                 });
                 createTableHover(hbox);
-                tableViewController.contentTable.getChildren().add(hbox);
+                tableViewController.getContentTable().getChildren().add(hbox);
             });
         } catch (IOException e) {
             throw new RuntimeException(e);

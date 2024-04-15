@@ -19,6 +19,10 @@ import java.util.ResourceBundle;
 
 public class HomeController implements Initializable {
     @FXML
+    private Button statisticButton;
+    @FXML
+    private ImageView statisticImage;
+    @FXML
     private Button checkInButton;
     @FXML
     private ImageView checkInImage;
@@ -69,18 +73,21 @@ public class HomeController implements Initializable {
         penaltyButton.getStyleClass().clear();
         usageButton.getStyleClass().clear();
         checkInButton.getStyleClass().clear();
+        statisticButton.getStyleClass().clear();
 
         personButton.getStyleClass().add("layout-button");
         deviceButton.getStyleClass().add("layout-button");
         penaltyButton.getStyleClass().add("layout-button");
         usageButton.getStyleClass().add("layout-button");
         checkInButton.getStyleClass().add("layout-button");
+        statisticButton.getStyleClass().add("layout-button");
 
         personImage.setImage(new Image(HelloApplication.class.getResource("image/person.png").toString()));
         deviceImage.setImage(new Image(HelloApplication.class.getResource("image/device.png").toString()));
         penaltyImage.setImage(new Image(HelloApplication.class.getResource("image/penalty.png").toString()));
         usageImage.setImage(new Image(HelloApplication.class.getResource("image/usage.png").toString()));
         checkInImage.setImage(new Image(HelloApplication.class.getResource("image/user-check.png").toString()));
+        statisticImage.setImage(new Image(HelloApplication.class.getResource("image/statistic.png").toString()));
     }
 
     private void resetButtonStyles(Button button, ImageView imageView, String urlImg, String buttonName) {
@@ -115,18 +122,26 @@ public class HomeController implements Initializable {
             handleButtonClick(checkInButton, checkInImage, "image/user-check-active.png");
             initContent(new ListCheckInState(this));
         });
+        statisticButton.setOnAction(event -> {
+            handleButtonClick(statisticButton, statisticImage, "image/statistic-active.png");
+            initContent(new StatDeviceByIdState(this));
+        });
 
         personButton.setOnMouseEntered(event -> handleButtonHover(personButton, personImage, "image/person-active.png"));
         deviceButton.setOnMouseEntered(event -> handleButtonHover(deviceButton, deviceImage, "image/device-active.png"));
         penaltyButton.setOnMouseEntered(event -> handleButtonHover(penaltyButton, penaltyImage, "image/penalty-active.png"));
         usageButton.setOnMouseEntered(event -> handleButtonHover(usageButton, usageImage, "image/usage-active.png"));
         checkInButton.setOnMouseEntered(event -> handleButtonHover(checkInButton, checkInImage, "image/user-check-active.png"));
+        statisticButton.setOnMouseEntered(event -> handleButtonHover(statisticButton, statisticImage, "image/statistic-active.png"));
+
 
         personButton.setOnMouseExited(event -> resetButtonStyles(personButton, personImage, "image/person.png","personButton"));
         deviceButton.setOnMouseExited(event -> resetButtonStyles(deviceButton, deviceImage, "image/device.png","deviceButton"));
         penaltyButton.setOnMouseExited(event -> resetButtonStyles(penaltyButton, penaltyImage, "image/penalty.png","penaltyButton"));
         usageButton.setOnMouseExited(event -> resetButtonStyles(usageButton, usageImage, "image/usage.png","usageButton"));
         checkInButton.setOnMouseExited(event -> resetButtonStyles(checkInButton, checkInImage, "image/user-check.png","checkInButton"));
+        statisticButton.setOnMouseExited(event -> resetButtonStyles(statisticButton, statisticImage, "image/statistic.png","statisticButton"));
+
         initContent(new ListPersonState(this));
     }
 

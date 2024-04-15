@@ -53,12 +53,12 @@ public class ListPenalizeState extends AbstractState implements State {
             root = loader.load();
             TableViewController tableViewController = loader.getController();
             content.getChildren().add(root);
-            tableViewController.titleTable.setText("Phiếu phạt");
-            createTableHeader(PENALIZE_HEADER, tableViewController.headerTable);
+            tableViewController.initTitle("Phiếu phạt");
+            createTableHeader(PENALIZE_HEADER, tableViewController.getHeaderTable());
             List<PenalizeEntity> penalizes = PenalizeService.getInstance().getALl();
             if (penalizes.isEmpty()) {
                 EmptyPane emptyPane = new EmptyPane();
-                tableViewController.contentTable.getChildren().add(emptyPane.create("Chưa có dữ liệu!"));
+                tableViewController.getContentTable().getChildren().add(emptyPane.create("Chưa có dữ liệu!"));
                 return;
             }
             penalizes.forEach(item -> {
@@ -68,15 +68,15 @@ public class ListPenalizeState extends AbstractState implements State {
                 Label label1 = createLabelContent(item.getId().toString(), 60.0);
                 Label label2 = createLabelContent(item.getPerson().getName(), 200.0);
                 Label label3 = createLabelContent(item.getType(), 220.0);
-                Label label4 = createLabelContent(item.getPayment() == null ? "Không có" : item.getPayment().toString(), 120.0);
+                Label label4 = createLabelContent(item.getPayment() == null ? "Không có" : AppUtil.moneyToString(item.getPayment()), 120.0);
                 Label label5 = createLabelContent(AppUtil.dateToString(item.getDate()), 160.0);
                 Pane label6 = initStatus(item);
                 hbox.getChildren().addAll(label1, label2, label3, label4, label5, label6);
                 hbox.setOnMouseClicked(event -> {
-                    System.out.println(item.getId());
+                    homeController.initContent(new PenalizeDetailState(homeController, item.getId()));
                 });
                 createTableHover(hbox);
-                tableViewController.contentTable.getChildren().add(hbox);
+                tableViewController.getContentTable().getChildren().add(hbox);
             });
         } catch (IOException e) {
             throw new RuntimeException(e);

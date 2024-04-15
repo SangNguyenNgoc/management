@@ -34,7 +34,6 @@ class PersonServiceTest {
                 "12",
                 "Kong and Godzilla",
                 "kongandgod3674@gmail.com",
-                "12898989898",
                 "CNTT",
                 "KTPM",
                 "0977686535"

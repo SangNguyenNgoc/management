@@ -34,7 +34,7 @@ public class PersonDetailState extends AbstractState implements State {
             UserDetailFormController controller = loader.getController();
             controller.initPerson(personId);
             controller.initValidate();
-            controller.initUpdatePersonButton();
+            controller.initUpdatePersonButton(homeController);
             content.getChildren().add(root);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -50,9 +50,15 @@ public class PersonDetailState extends AbstractState implements State {
 
         Button usageButton = createButton(ButtonType.BLUE_BUTTON, "Lập phiếu mượn");
         rightToolbar.getChildren().add(usageButton);
+        usageButton.setOnMouseClicked(event -> {
+            homeController.initContent(new ListDeviceToUseState(homeController, personId));
+        });
 
         Button penalizeButton = createButton(ButtonType.YELLOW_BUTTON, "Phạt");
         penalizeButton.setPrefSize(90,35);
+        penalizeButton.setOnMouseClicked(event -> {
+            homeController.initContent(new AddPenalizeState(homeController, personId));
+        });
         rightToolbar.getChildren().add(penalizeButton);
 
     }

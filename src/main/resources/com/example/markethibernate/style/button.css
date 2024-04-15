@@ -42,3 +42,16 @@
     -fx-border-radius: 8;
     -fx-border-width: 2
 }
+
+.red-button {
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #E11D48;
+    -fx-font-size: 14;
+}
+
+.red-button-active {
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #E11D48;
+    -fx-font-size: 14;
+    -fx-underline: true;
+}

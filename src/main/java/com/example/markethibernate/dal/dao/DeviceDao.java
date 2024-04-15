@@ -34,7 +34,19 @@ public class DeviceDao {
 
     public List<DeviceEntity> findAll() {
         try (Session session = sessionFactory.openSession()) {
-            List<DeviceEntity> devices = session.createQuery("FROM DeviceEntity d where d.status = true", DeviceEntity.class).list();
+            List<DeviceEntity> devices = session.createQuery(
+                    "FROM DeviceEntity d where d.status = true order by substring(cast(abs(d.id) AS string) , 1, 1) ",
+                    DeviceEntity.class).list();
+            session.close();
+            return devices;
+        }
+    }
+
+
+    public List<DeviceEntity> findAllAndUsage() {
+        try (Session session = sessionFactory.openSession()) {
+            List<DeviceEntity> devices = session.createQuery("FROM DeviceEntity d left join fetch d.usageInfos u where d.status = true",
+                    DeviceEntity.class).list();
             session.close();
             return devices;
         }
@@ -52,6 +64,45 @@ public class DeviceDao {
             }
         }
     }
+
+    public List<DeviceEntity> findByType(Long type) {
+        try (Session session = sessionFactory.openSession()) {
+            Query query = session.createQuery(
+                    "from DeviceEntity d where d.status = true and substring(cast(d.id as string), 1, 1) = :type",
+                    DeviceEntity.class);
+            query.setParameter("type", type.toString());
+            var devices = query.getResultList();
+            session.close();
+            if(!devices.isEmpty()) {
+                return devices;
+            } else {
+                return null;
+            }
+        }
+    }
+
+    public int deleteDeviceByType(Long type) {
+        Transaction transaction = null;
+        Session session = sessionFactory.openSession();
+        try {
+            transaction = session.beginTransaction();
+            int updatedEntities = session.createQuery("""
+                    update DeviceEntity d set d.status = false
+                    where substring(cast(d.id as string), 1, 1) = :type
+                    """)
+                    .setParameter("type", type.toString())
+                    .executeUpdate();
+            transaction.commit();
+            return updatedEntities;
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            logger.log(Level.SEVERE, "Failed to delete person", e);
+            return 0;
+        }
+    }
+
 //    Xoa theo dieu kien
     public boolean deleteDevicesByCondition(String condition) {
         Transaction transaction = null;

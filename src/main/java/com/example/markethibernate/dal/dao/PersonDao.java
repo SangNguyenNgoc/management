@@ -31,7 +31,9 @@ public class PersonDao {
 
     public List<PersonEntity> findAll() {
         try (Session session = sessionFactory.openSession()) {
-            List<PersonEntity> persons = session.createQuery("FROM PersonEntity p where p.status = true", PersonEntity.class).list();
+            List<PersonEntity> persons = session.createQuery(
+                    "FROM PersonEntity p where p.status = true order by p.department, substring(cast(p.id AS string) , 3, 2)",
+                    PersonEntity.class).list();
             session.close();
             return persons;
         }
@@ -47,6 +49,44 @@ public class PersonDao {
             } else {
                 return null;
             }
+        }
+    }
+
+    public List<PersonEntity> findByYear(Long year) {
+        try (Session session = sessionFactory.openSession()) {
+            Query query = session.createQuery(
+                    "from PersonEntity p where p.status = true and substring(cast(p.id as string), 3, 2) = :year",
+                    PersonEntity.class);
+            query.setParameter("year", year.toString());
+            var persons = query.getResultList();
+            session.close();
+            if(!persons.isEmpty()) {
+                return persons;
+            } else {
+                return null;
+            }
+        }
+    }
+
+    public int deletePersonByYear(Long year) {
+        Transaction transaction = null;
+        Session session = sessionFactory.openSession();
+        try {
+            transaction = session.beginTransaction();
+            int updatedEntities = session.createQuery("""
+                    update PersonEntity p set p.status = false
+                    where substring(cast(p.id as string), 3, 2) = :year
+                    """)
+                    .setParameter("year", year.toString())
+                    .executeUpdate();
+            transaction.commit();
+            return updatedEntities;
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            logger.log(Level.SEVERE, "Failed to delete person", e);
+            return 0;
         }
     }
 
@@ -81,7 +121,7 @@ public class PersonDao {
 
     public PersonEntity updatePerson(PersonEntity person) {
         Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
             session.update(person);
             transaction.commit();
@@ -97,7 +137,7 @@ public class PersonDao {
 
     public PersonEntity deletePersonById(Long id) {
         Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
             PersonEntity person = session.get(PersonEntity.class, id);
             if (person != null) {

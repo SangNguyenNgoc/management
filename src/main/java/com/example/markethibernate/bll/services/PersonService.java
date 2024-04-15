@@ -1,5 +1,6 @@
 package com.example.markethibernate.bll.services;
 
+import com.example.markethibernate.bll.dtos.EmailChecked;
 import com.example.markethibernate.bll.dtos.PersonValidator;
 import com.example.markethibernate.bll.mappers.PersonMapper;
 import com.example.markethibernate.dal.dao.PersonDao;
@@ -7,11 +8,18 @@ import com.example.markethibernate.dal.entities.DeviceEntity;
 import com.example.markethibernate.dal.entities.PersonEntity;
 import com.example.markethibernate.utils.AppUtil;
 import com.example.markethibernate.utils.ValidatorUtil;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.mapstruct.factory.Mappers;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -49,6 +57,14 @@ public class PersonService {
         return PersonDao.getInstance().findById(id);
     }
 
+    public List<PersonEntity> getByYear(String year) {
+        Long y = AppUtil.parseId(year);
+        if (y == null) {
+            return null;
+        }
+        return PersonDao.getInstance().findByYear(y);
+    }
+
     public PersonEntity addPerson(String id, String name, String email, String password,
                                   String department, String profession, String phoneNumber
     ) {
@@ -56,7 +72,6 @@ public class PersonService {
                 .id(id)
                 .name(name)
                 .email(email)
-                .password(password)
                 .department(department)
                 .profession(profession)
                 .phoneNumber(phoneNumber)
@@ -64,7 +79,7 @@ public class PersonService {
         if (!ValidatorUtil.validateObject(personValidator).isBlank()) {
             return null;
         }
-        if(!checkEmailTaken(email).isBlank()) {
+        if(!checkEmailTaken(email, id).isBlank()) {
             return null;
         }
         PersonEntity person = personMapper.toEntity(personValidator);
@@ -73,7 +88,7 @@ public class PersonService {
         return PersonDao.getInstance().addPerson(person);
     }
 
-    public PersonEntity updatePerson(String idString, String name, String email, String password,
+    public PersonEntity updatePerson(String idString, String name, String email,
                                      String department, String profession, String phoneNumber
     ) {
         PersonEntity person = getById(idString);
@@ -81,9 +96,9 @@ public class PersonService {
             return null;
         }
         PersonValidator personValidator = PersonValidator.builder()
+                .id(idString)
                 .name(name)
                 .email(email)
-                .password(password)
                 .department(department)
                 .profession(profession)
                 .phoneNumber(phoneNumber)
@@ -92,12 +107,11 @@ public class PersonService {
             return null;
         }
         if(!person.getEmail().equals(email)) {
-            if(!checkEmailTaken(email).isBlank()) {
+            if(!checkEmailTaken(email, idString).isBlank()) {
                 return null;
             }
         }
         PersonEntity personUpdate = personMapper.partialUpdate(personValidator, person);
-        personUpdate.setPassword(createPassword(password));
         return PersonDao.getInstance().updatePerson(personUpdate);
     }
 
@@ -107,6 +121,14 @@ public class PersonService {
             return null;
         }
         return PersonDao.getInstance().deletePersonById(AppUtil.parseId(idString));
+    }
+
+    public int deletePersonByYear(String year) {
+        Long y = AppUtil.parseId(year);
+        if (y == null) {
+            return 0;
+        }
+        return PersonDao.getInstance().deletePersonByYear(y);
     }
 
     public String checkId(String id) {
@@ -131,20 +153,21 @@ public class PersonService {
         );
     }
 
-    public String checkEmail(String email) {
+    public String checkEmail(EmailChecked checked) {
         String validate = ValidatorUtil.validateField(
                 PersonValidator.builder()
-                        .email(email)
+                        .email(checked.getEmail())
                         .build(),
                 "email");
         if(validate.isBlank()) {
-            validate += checkEmailTaken(email);
+            validate += checkEmailTaken(checked.getEmail(), checked.getId());
         }
         return validate;
     }
 
-    public String checkEmailTaken(String email) {
-        if(PersonDao.getInstance().findByEmail(email) != null) {
+    public String checkEmailTaken(String email, String id) {
+        PersonEntity person = PersonDao.getInstance().findByEmail(email);
+        if(person != null && !person.getId().toString().equals(id)) {
             return "Email đã được sử dụng";
         }
         return "";
@@ -165,14 +188,6 @@ public class PersonService {
                 "phoneNumber");
     }
 
-    public String checkPassword(String password) {
-        return ValidatorUtil.validateField(
-                PersonValidator.builder()
-                        .password(password)
-                        .build(),
-                "password");
-    }
-
     public String checkDepartment(String department) {
         return ValidatorUtil.validateField(
                 PersonValidator.builder()
@@ -187,6 +202,35 @@ public class PersonService {
                         .profession(profession)
                         .build(),
                 "profession");
+    }
+
+    public String saveFromExcel(File selectedFile) {
+        try (Workbook workbook = WorkbookFactory.create(selectedFile)) {
+            Sheet sheet = workbook.getSheetAt(0);
+            StringBuilder result = new StringBuilder();
+            for (Row row : sheet) {
+                if(row.getCell(0) == null) {
+                    break;
+                }
+                if (row.getRowNum() > 0) {
+                    PersonEntity person = addPerson(
+                            String.valueOf((long) row.getCell(0).getNumericCellValue()),
+                            row.getCell(1).getStringCellValue(),
+                            row.getCell(6).getStringCellValue(),
+                            String.valueOf(row.getCell(5).getNumericCellValue()),
+                            row.getCell(2).getStringCellValue(),
+                            row.getCell(3).getStringCellValue(),
+                            row.getCell(4).getStringCellValue()
+                    );
+                    if (person == null) {
+                        result.append(row.getRowNum()).append(", ");
+                    }
+                }
+            }
+            return String.valueOf(result);
+        } catch (IOException e) {
+            return null;
+        }
     }
 
     private static class PersonServiceHolder {

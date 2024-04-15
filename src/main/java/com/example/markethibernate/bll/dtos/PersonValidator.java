@@ -31,10 +31,6 @@ public class PersonValidator implements Serializable {
     @Email(message = "email sai định dạng")
     String email;
 
-    @NotBlank(message = "mật khẩu không được để trống")
-    @Size(message = "mật khẩu phải chứa tối thiểu 8 kí tự và tối đa 20 kí tự", min = 8, max = 20)
-    String password;
-
     @NotBlank(message = "tên ngành không được để trống")
     @Size(message = "tên ngành chỉ chứa tối đa 50 kí tự", min = 0, max = 50)
     String profession;

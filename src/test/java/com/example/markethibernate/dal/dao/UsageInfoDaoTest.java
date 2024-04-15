@@ -16,7 +16,7 @@ public class UsageInfoDaoTest {
     }
     @Test
     void findById() {
-        UsageInfoEntity usageInfo = UsageInfoDao.getInstance().findById(5L);
+        UsageInfoEntity usageInfo = UsageInfoDao.getInstance().findById(6L);
         System.out.println(usageInfo);
     }
     @Test

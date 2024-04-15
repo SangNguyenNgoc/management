@@ -10,7 +10,8 @@ public enum ButtonType {
     GREEN_BUTTON("green-button", "green-button-active"),
     BLUE_BUTTON("blue-button", "blue-button"),
     YELLOW_BUTTON("yellow-button", "yellow-button"),
-    WHITE_BUTTON("white-button","white-button");
+    WHITE_BUTTON("white-button","white-button"),
+    RED_BUTTON("red-button", "red-button-active");
 
 
     private final String normalStyle;

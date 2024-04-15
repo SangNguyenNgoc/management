@@ -1,7 +1,9 @@
 package com.example.markethibernate.dal.dao;
 
+import com.example.markethibernate.dal.entities.PersonEntity;
 import com.example.markethibernate.dal.entities.UsageInfoEntity;
 import com.example.markethibernate.utils.HibernateUtil;
+import jakarta.persistence.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -53,6 +55,19 @@ public class UsageInfoDao {
         } catch (Exception ex) {
             logger.log(Level.SEVERE, "Query failure", ex);
             return new ArrayList<>();
+        }
+    }
+
+    public Boolean checkDeviceIsUsing(Long deviceId) {
+        try (Session session = sessionFactory.openSession()) {
+            Query query = session.createQuery(
+                    "FROM  UsageInfoEntity u join fetch u.device where u.device.id = :id and u.returnTime = null ",
+                    UsageInfoEntity.class);
+            var resultList = query.getResultList();
+            return resultList.isEmpty();
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, "Query failure", ex);
+            return false;
         }
     }
 
@@ -116,7 +131,6 @@ public class UsageInfoDao {
             return false;
         }
     }
-
 
     public Boolean isExistsById(Long id) {
         Transaction transaction = null;

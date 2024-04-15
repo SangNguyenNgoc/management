@@ -102,6 +102,10 @@ public class UsageInfoService {
 
     public UsageInfoEntity returnDevice(String usageId) {
         UsageInfoEntity usageInfo = getById(usageId);
+        if( usageInfo == null ) {
+            DialogUtil.getInstance().showAlert("Lỗi", "Không tìm thấy phiếu mượn", Alert.AlertType.ERROR);
+            return null;
+        }
         if(usageInfo.getBorrowTime() == null) {
             return null;
         }

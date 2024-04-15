@@ -1,6 +1,7 @@
 package com.example.markethibernate.dal.dao;
 
 import com.example.markethibernate.dal.entities.DeviceEntity;
+import com.example.markethibernate.utils.AppUtil;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -66,4 +67,9 @@ class DeviceDaoTest {
          System.out.println("After update:" + device1.toString());
     }
 
+    @Test
+    void findAllAndUsage() {
+        List<DeviceEntity> deviceEntities = DeviceDao.getInstance().findAllAndUsage();
+        System.out.println(deviceEntities.toString());
+    }
 }

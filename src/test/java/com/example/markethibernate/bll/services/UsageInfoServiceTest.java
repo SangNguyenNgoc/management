@@ -17,7 +17,7 @@ public class UsageInfoServiceTest {
     }
     @Test
     void findById() {
-        UsageInfoEntity usageInfo = UsageInfoService.getInstance().getById("2");
+        UsageInfoEntity usageInfo = UsageInfoService.getInstance().getById("6");
         System.out.println(usageInfo);
     }
     @Test

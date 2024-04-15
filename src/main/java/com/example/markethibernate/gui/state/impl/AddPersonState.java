@@ -1,23 +1,31 @@
 package com.example.markethibernate.gui.state.impl;
 
 import com.example.markethibernate.HelloApplication;
+import com.example.markethibernate.bll.services.PersonService;
+import com.example.markethibernate.dal.entities.PersonEntity;
 import com.example.markethibernate.gui.controller.HomeController;
 import com.example.markethibernate.gui.controller.UserDetailFormController;
 import com.example.markethibernate.gui.state.AbstractState;
 import com.example.markethibernate.gui.state.State;
 import com.example.markethibernate.gui.utils.ButtonType;
 import com.example.markethibernate.gui.utils.Component;
+import com.example.markethibernate.gui.utils.DialogUtil;
 import com.example.markethibernate.gui.utils.IconType;
+import com.example.markethibernate.utils.AppUtil;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.apache.poi.ss.usermodel.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AddPersonState extends AbstractState implements State {
 
@@ -50,22 +58,32 @@ public class AddPersonState extends AbstractState implements State {
         leftToolbar.getChildren().add(backButton);
 
         Button openExcelButton = createButton(ButtonType.GREEN_BUTTON, "Import ", IconType.EXCEL);
-        openExcelButton.setOnAction(event -> {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Chọn file Excel");
-            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel Files (*.xlsx, *.xls)", "*.xlsx", "*.xls");
-            fileChooser.getExtensionFilters().add(extFilter);
-            File selectedFile = fileChooser.showOpenDialog(new Stage());
-            if (selectedFile != null) {
-                System.out.println("Tệp Excel được chọn: " + selectedFile.getAbsolutePath());
-            } else {
-                System.out.println("Không có tệp Excel nào được chọn.");
-            }
-        });
+        openExcelButton.setOnMouseClicked(event -> handleImportExcel());
         rightToolbar.getChildren().add(openExcelButton);
     }
 
     @Override
     public void refresh() {
+    }
+
+    private void handleImportExcel() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Chọn file Excel");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel Files (*.xlsx, *.xls)", "*.xlsx", "*.xls");
+        fileChooser.getExtensionFilters().add(extFilter);
+        File selectedFile = fileChooser.showOpenDialog(new Stage());
+        if (selectedFile != null) {
+            String result = PersonService.getInstance().saveFromExcel(selectedFile);
+            if(result == null) {
+                DialogUtil.getInstance().showAlert("Lỗi", "Import file thất bại, đã có lỗi xảy ra.", Alert.AlertType.ERROR);
+            }
+            if (result.isBlank()) {
+                DialogUtil.getInstance().showAlert("Thông báo", "Import file thành công.", Alert.AlertType.INFORMATION);
+            } else {
+                DialogUtil.getInstance().showAlert("Lỗi", "Lỗi định dạng dữ liệu ở các dòng: " + result, Alert.AlertType.ERROR);
+            }
+        } else {
+            System.out.println("Không có tệp Excel nào được chọn.");
+        }
     }
 }

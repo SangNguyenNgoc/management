@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="525.0" prefWidth="400.0" spacing="25.0" style="-fx-border-radius: 8;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.markethibernate.gui.controller.BorrowConfirmController">
+   <children>
+      <Label alignment="CENTER" prefHeight="50.0" prefWidth="400.0" text="Thông tin phiếu mượn">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <HBox prefHeight="30.0" prefWidth="200.0">
+         <children>
+            <Label prefHeight="50.0" prefWidth="250.0" text="Mã thành viên:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="idLabel" prefHeight="30.0" prefWidth="400.0" style="-fx-border-color: #999999; -fx-border-radius: 5;" text="312410419">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </Label>
+         </children>
+         <padding>
+            <Insets left="20.0" right="20.0" />
+         </padding>
+      </HBox>
+      <HBox prefHeight="30.0" prefWidth="200.0">
+         <children>
+            <Label prefHeight="50.0" prefWidth="250.0" text="Tên thành viên:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="nameLabel" prefHeight="30.0" prefWidth="400.0" style="-fx-border-color: #999999; -fx-border-radius: 5;" text="Nguyễn Ngọc Sang">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </Label>
+         </children>
+         <padding>
+            <Insets left="20.0" right="20.0" />
+         </padding>
+      </HBox>
+      <HBox prefHeight="90.0" prefWidth="400.0">
+         <children>
+            <Label prefHeight="30.0" prefWidth="250.0" text="Thiết bị:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="deviceLabel" alignment="TOP_LEFT" prefHeight="90.0" prefWidth="400.0" style="-fx-border-color: #999999; -fx-border-radius: 5;" text="Micro 7xx đời 2024 chất lượng cao - Mã số: 100007" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </Label>
+         </children>
+         <padding>
+            <Insets left="20.0" right="20.0" />
+         </padding>
+      </HBox>
+      <HBox prefHeight="30.0" prefWidth="200.0">
+         <children>
+            <Label prefHeight="50.0" prefWidth="250.0" text="Thời gian:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="timeLabel" prefHeight="30.0" prefWidth="400.0" style="-fx-border-color: #999999; -fx-border-radius: 5;" text="12/04/2024 13:50">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </Label>
+         </children>
+         <padding>
+            <Insets left="20.0" right="20.0" />
+         </padding>
+      </HBox>
+      <Label alignment="TOP_LEFT" prefHeight="70.0" prefWidth="400.0" text="Lưu ý: Thành viên phải cam kết nếu làm hỏng hoặc mất thiết bị sẽ phải bồi thường và chịu phạt, thời gian mượn không quá 24 tiếng kể từ khi thiết bị được mượn." wrapText="true">
+         <font>
+            <Font name="System Italic" size="14.0" />
+         </font>
+         <padding>
+            <Insets left="20.0" right="20.0" />
+         </padding>
+      </Label>
+      <HBox fx:id="buttons" prefHeight="50.0" prefWidth="400.0" spacing="20.0">
+         <children>
+            <Button fx:id="submitButton" style="-fx-background-color: #2563EB; -fx-text-fill: white; -fx-background-radius: 5" mnemonicParsing="false" prefHeight="30.0" prefWidth="150.0" text="Xác nhận và in phiếu">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+            <Button fx:id="cancelButton" style="-fx-background-color: white; -fx-border-color: #999999; -fx-border-radius: 5; -fx-border-width: 2" mnemonicParsing="false" prefHeight="30.0" prefWidth="90.0" text="Hủy">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+         </children>
+         <padding>
+            <Insets left="120.0" top="10.0" />
+         </padding>
+      </HBox>
+   </children>
+</VBox>

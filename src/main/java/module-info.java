@@ -11,6 +11,7 @@ module com.example.markethibernate {
     requires jakarta.validation;
     requires org.apache.commons.lang3;
     requires spring.security.crypto;
+    requires org.apache.poi.ooxml;
 
 
     opens com.example.markethibernate to javafx.fxml;
