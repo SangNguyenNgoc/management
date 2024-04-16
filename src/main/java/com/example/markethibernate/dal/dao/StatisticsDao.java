@@ -43,6 +43,48 @@ public class StatisticsDao {
         }
     }
 
+    public List<CountPerDate> countPeopleCheckInMonthByDepartment(Integer month, Integer year, String department) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<CountPerDate> query = session.createQuery(
+                    "SELECT NEW com.example.markethibernate.bll.dtos.CountPerDate(u.checkinTime, COUNT(u.id)) " +
+                            "FROM UsageInfoEntity u " +
+                            "WHERE MONTH (u.checkinTime) = :month " +
+                            "AND YEAR (u.checkinTime) = :year " +
+                            "AND u.person.department = :department " +
+                            "GROUP BY DATE(u.checkinTime) " +
+                            "ORDER BY u.checkinTime DESC", CountPerDate.class);
+            query.setParameter("month", month);
+            query.setParameter("year", year);
+            query.setParameter("department", department);
+            return query.list();
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Query failure", e);
+            return null;
+        }
+    }
+
+    public List<CountPerDate> countPeopleCheckInMonthByMajor(Integer month, Integer year, String major) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<CountPerDate> query = session.createQuery(
+                    "SELECT NEW com.example.markethibernate.bll.dtos.CountPerDate(u.checkinTime, COUNT(u.id)) " +
+                            "FROM UsageInfoEntity u " +
+                            "WHERE MONTH (u.checkinTime) = :month " +
+                            "AND YEAR (u.checkinTime) = :year " +
+                            "AND u.person.profession = :major " +
+                            "GROUP BY DATE(u.checkinTime) " +
+                            "ORDER BY u.checkinTime DESC", CountPerDate.class);
+            query.setParameter("month", month);
+            query.setParameter("year", year);
+            query.setParameter("major", major);
+            return query.list();
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Query failure", e);
+            return null;
+        }
+    }
+
     public List<CountPerDate> countPenalizeInMonthPresent(Integer month, Integer year) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();

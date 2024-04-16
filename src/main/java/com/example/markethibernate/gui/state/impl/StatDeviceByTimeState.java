@@ -58,7 +58,7 @@ public class StatDeviceByTimeState extends AbstractState implements State {
         nameButton.setOnMouseClicked(event -> homeController.initContent(new StatDeviceByIdState(homeController)));
         nameButton.setPrefSize(120, 30);
 
-        rightToolbar.getChildren().addAll(checkInButton, timeButton, nameButton);
+        rightToolbar.getChildren().addAll(checkInButton, timeButton, nameButton, penalizeButton);
     }
 
     @Override

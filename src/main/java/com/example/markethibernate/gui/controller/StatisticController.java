@@ -6,20 +6,18 @@ import com.example.markethibernate.bll.dtos.DeviceBorrowingStatByTime;
 import com.example.markethibernate.bll.services.StatisticsService;
 import com.example.markethibernate.utils.AppUtil;
 import javafx.fxml.FXML;
-import javafx.geometry.Side;
 import javafx.scene.chart.*;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
-import javafx.scene.text.TextAlignment;
 import javafx.util.StringConverter;
+import org.apache.poi.ss.formula.functions.T;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 public class StatisticController {
     @FXML
@@ -36,7 +34,7 @@ public class StatisticController {
     private TextField textField;
 
 
-    public void initStatCheckInByTime() {
+    public void initStatCheckInByTime(String department, String major) {
         int month = datePicker.getValue().getMonth().getValue();
         int year = datePicker.getValue().getYear();
 
@@ -45,8 +43,17 @@ public class StatisticController {
         x.setLabel("Ngày vào");
         y.setLabel("Số lượt vào");
 
-        List<CountPerDate> data = StatisticsService.getInstance().countPersonCheckInMonth(month, year);
-        chart.setTitle("Số lượt vào phòng thiết bị trong tháng " + month + "/" + year);
+        List<CountPerDate> data = null;
+        if (department == null  && major == null) {
+            chart.setTitle("Số lượt vào phòng thiết bị trong tháng " + month + "/" + year);
+            data = StatisticsService.getInstance().countPersonCheckInMonth(month, year);
+        } else if (department != null) {
+            chart.setTitle("Số lượt vào phòng thiết bị trong tháng " + month + "/" + year + " của khoa " + department);
+            data = StatisticsService.getInstance().countPersonCheckInMonthByDepartment(month, year, department);
+        } else {
+            chart.setTitle("Số lượt vào phòng thiết bị trong tháng " + month + "/" + year + " của ngành " + major);
+            data = StatisticsService.getInstance().countPersonCheckInMonthByMajor(month, year, major);
+        }
         XYChart.Series<String, Number> series1 = new XYChart.Series<>();
         data.forEach(item -> {
             series1.getData().add(new XYChart.Data<>(AppUtil.dateToStringShort(item.getDateTime()), item.getCount()));
@@ -116,24 +123,7 @@ public class StatisticController {
     }
 
     public void initCombobox() {
-        datePicker = new DatePicker(YearMonth.now().atDay(1));
-        datePicker.setConverter(new StringConverter<LocalDate>() {
-            private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/yyyy");
-            @Override
-            public String toString(LocalDate localDate) {
-                if (localDate != null) {
-                    return dateFormatter.format(localDate);
-                }
-                return "";
-            }
-            @Override
-            public LocalDate fromString(String string) {
-                if (string != null && !string.isEmpty()) {
-                    return YearMonth.parse(string, dateFormatter).atDay(1);
-                }
-                return null;
-            }
-        });
+        getDatePicker();
         datePicker.setOnAction(ev -> {
             if (datePicker.getValue() != null) {
                 if (textField != null) {
@@ -192,6 +182,16 @@ public class StatisticController {
     }
 
     public void setTotalPenalize() {
+        getDatePicker();
+        datePicker.setOnAction(ev -> {
+            if (datePicker.getValue() != null) {
+                initStatPenalize();
+            }
+        });
+        header.getChildren().add(datePicker);
+    }
+
+    public void getDatePicker() {
         datePicker = new DatePicker(YearMonth.now().atDay(1));
         datePicker.setConverter(new StringConverter<LocalDate>() {
             private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/yyyy");
@@ -210,11 +210,31 @@ public class StatisticController {
                 return null;
             }
         });
-        datePicker.setOnAction(ev -> {
-            if (datePicker.getValue() != null) {
-                initStatPenalize();
-            }
+    }
+
+    public void initDepartmentAndMajorField() {
+        Button department = new Button("Lọc theo khoa");
+        Button major = new Button("Lọc theo ngành");
+        department.setOnMouseClicked(event -> {
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("Nhập khoa");
+            dialog.setHeaderText("Nhập khoa muốn lọc");
+            dialog.setContentText("Tên khoa:");
+
+            Optional<String> result = dialog.showAndWait();
+            result.ifPresent(s -> initStatCheckInByTime(s, null));
         });
-        header.getChildren().add(datePicker);
+        major.setOnMouseClicked(event -> {
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("Nhập ngành");
+            dialog.setHeaderText("Nhập ngành muốn lọc:");
+            dialog.setContentText("Tên ngành:");
+
+            Optional<String> result = dialog.showAndWait();
+            result.ifPresent(s -> initStatCheckInByTime(null, s));
+        });
+        header.getChildren().addAll(department, major);
+
+
     }
 }

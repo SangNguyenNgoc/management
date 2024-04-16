@@ -53,6 +53,38 @@ public class StatisticsService {
                 .collect(Collectors.toList());
     }
 
+    public List<CountPerDate> countPersonCheckInMonthByDepartment(Integer month, Integer year, String department) {
+        List<LocalDate> dayOfMonth = getDayOfMonth(month, year);
+        List<CountPerDate> checkInCounts = StatisticsDao.getInstance().countPeopleCheckInMonthByDepartment(month, year, department);
+        return dayOfMonth.stream()
+                .map(day -> {
+                    Optional<CountPerDate> checkIn = checkInCounts.stream()
+                            .filter(checkInCount -> checkInCount.getDateTime().toLocalDate().equals(day))
+                            .findFirst();
+                    return checkIn.orElse(CountPerDate.builder()
+                            .dateTime(day.atStartOfDay())
+                            .count(0L)
+                            .build());
+                })
+                .collect(Collectors.toList());
+    }
+
+    public List<CountPerDate> countPersonCheckInMonthByMajor(Integer month, Integer year, String major) {
+        List<LocalDate> dayOfMonth = getDayOfMonth(month, year);
+        List<CountPerDate> checkInCounts = StatisticsDao.getInstance().countPeopleCheckInMonthByMajor(month, year, major);
+        return dayOfMonth.stream()
+                .map(day -> {
+                    Optional<CountPerDate> checkIn = checkInCounts.stream()
+                            .filter(checkInCount -> checkInCount.getDateTime().toLocalDate().equals(day))
+                            .findFirst();
+                    return checkIn.orElse(CountPerDate.builder()
+                            .dateTime(day.atStartOfDay())
+                            .count(0L)
+                            .build());
+                })
+                .collect(Collectors.toList());
+    }
+
     public List<CountPerDate> countPenalizeInMonthNotPresent(Integer month, Integer year) {
         List<LocalDate> dayOfMonth = getDayOfMonth(month, year);
         List<CountPerDate> checkInCounts = StatisticsDao.getInstance().countPenalizeInMonthNotPresent(month, year);

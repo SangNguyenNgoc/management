@@ -28,7 +28,8 @@ public class StatCheckInState extends AbstractState implements State {
             root = loader.load();
             StatisticController controller = loader.getController();
             controller.initCombobox();
-            controller.initStatCheckInByTime();
+            controller.initDepartmentAndMajorField();
+            controller.initStatCheckInByTime(null, null);
             content.getChildren().add(root);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -58,7 +59,7 @@ public class StatCheckInState extends AbstractState implements State {
         nameButton.setOnMouseClicked(event -> homeController.initContent(new StatDeviceByIdState(homeController)));
         nameButton.setPrefSize(120, 30);
 
-        rightToolbar.getChildren().addAll(checkInButton, timeButton, nameButton);
+        rightToolbar.getChildren().addAll(checkInButton, timeButton, nameButton, penalizeButton);
     }
 
     @Override

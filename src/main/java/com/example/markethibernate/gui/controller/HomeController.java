@@ -124,7 +124,7 @@ public class HomeController implements Initializable {
         });
         statisticButton.setOnAction(event -> {
             handleButtonClick(statisticButton, statisticImage, "image/statistic-active.png");
-            initContent(new StatDeviceByIdState(this));
+            initContent(new StatCheckInState(this));
         });
 
         personButton.setOnMouseEntered(event -> handleButtonHover(personButton, personImage, "image/person-active.png"));
