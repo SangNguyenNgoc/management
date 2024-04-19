@@ -37,7 +37,7 @@ public class PenalizeService {
         if (id == null) {
             return null;
         }
-        return PenalizeDao.getInstance().findById(id);
+        return PenalizeDao.getInstance().findByIdAndPerson(id);
     }
 
     public PenalizeEntity getByIdAndPerson(String idString) {

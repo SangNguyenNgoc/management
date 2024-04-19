@@ -1,7 +1,10 @@
 package com.example.markethibernate.gui.state.impl;
 
 import com.example.markethibernate.HelloApplication;
+import com.example.markethibernate.bll.services.DeviceService;
+import com.example.markethibernate.bll.services.PersonService;
 import com.example.markethibernate.bll.services.UsageInfoService;
+import com.example.markethibernate.dal.entities.DeviceEntity;
 import com.example.markethibernate.dal.entities.UsageInfoEntity;
 import com.example.markethibernate.gui.controller.CheckInController;
 import com.example.markethibernate.gui.controller.HomeController;
@@ -12,14 +15,14 @@ import com.example.markethibernate.gui.state.AbstractState;
 import com.example.markethibernate.gui.state.State;
 import com.example.markethibernate.gui.utils.ButtonType;
 import com.example.markethibernate.gui.utils.Component;
+import com.example.markethibernate.gui.utils.DialogUtil;
 import com.example.markethibernate.gui.utils.EmptyPane;
 import com.example.markethibernate.utils.AppUtil;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -31,8 +34,15 @@ import java.util.Optional;
 
 public class ListUsageInfoState extends AbstractState implements State {
 
+    private String filter;
+
     public ListUsageInfoState(HomeController homeController) {
         setHomeController(homeController);
+    }
+
+    public ListUsageInfoState(HomeController homeController, String filter) {
+        setHomeController(homeController);
+        this.filter = filter;
     }
 
     private static final List<LabelHeader> USAGE_INFO_HEADER = List.of(
@@ -55,8 +65,9 @@ public class ListUsageInfoState extends AbstractState implements State {
             content.getChildren().add(root);
             tableViewController.initTitle("Phiếu mượn");
             createTableHeader(USAGE_INFO_HEADER, tableViewController.getHeaderTable());
-            List<UsageInfoEntity> usageInfos = UsageInfoService.getInstance().findAll();
-            if (usageInfos.isEmpty()) {
+            createFilter(tableViewController.getRightHeader());
+            List<UsageInfoEntity> usageInfos = fetchUsageInfo();
+            if (usageInfos == null || usageInfos.isEmpty()) {
                 EmptyPane emptyPane = new EmptyPane();
                 tableViewController.getContentTable().getChildren().add(emptyPane.create("Chưa có dữ liệu!"));
                 return;
@@ -108,5 +119,26 @@ public class ListUsageInfoState extends AbstractState implements State {
     @Override
     public void refresh() {
         homeController.initContent(this);
+    }
+
+    public void createFilter(HBox hBox) {
+        TextField textField = new TextField();
+        textField.setPromptText("Lọc theo mã");
+        textField.setText(filter);
+        textField.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+                homeController.initContent(new ListUsageInfoState(homeController, textField.getText()));
+            }
+        });
+        hBox.getChildren().add(textField);
+    }
+
+    private List<UsageInfoEntity> fetchUsageInfo() {
+        if (filter == null || filter.isEmpty()) {
+            return UsageInfoService.getInstance().findAll();
+        } else{
+            UsageInfoEntity usageInfo = UsageInfoService.getInstance().getById(filter);
+            return usageInfo == null ? null : List.of(usageInfo);
+        }
     }
 }

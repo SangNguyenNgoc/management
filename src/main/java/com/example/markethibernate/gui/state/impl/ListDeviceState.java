@@ -60,7 +60,7 @@ public class ListDeviceState extends AbstractState implements State {
             createTableHeader(DEVICE_HEADER, tableViewController.getHeaderTable());
             createFilter(tableViewController.getRightHeader());
             List<DeviceEntity> devices = fetchDevices();
-            if (devices.isEmpty()) {
+            if (devices == null || devices.isEmpty()) {
                 EmptyPane emptyPane = new EmptyPane();
                 tableViewController.getContentTable().getChildren().add(emptyPane.create("Chưa có dữ liệu!"));
                 return;
@@ -102,8 +102,11 @@ public class ListDeviceState extends AbstractState implements State {
     private List<DeviceEntity> fetchDevices() {
         if (filter == null || filter.isEmpty()) {
             return DeviceService.getInstance().getAll();
-        } else {
+        } else if (filter.length() == 1){
             return DeviceService.getInstance().getByType(filter);
+        } else {
+            DeviceEntity device = DeviceService.getInstance().getById(filter);
+            return device == null ? null : List.of(device);
         }
     }
 

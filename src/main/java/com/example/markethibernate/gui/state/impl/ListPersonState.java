@@ -2,6 +2,7 @@ package com.example.markethibernate.gui.state.impl;
 
 import com.example.markethibernate.HelloApplication;
 import com.example.markethibernate.bll.services.PersonService;
+import com.example.markethibernate.dal.entities.DeviceEntity;
 import com.example.markethibernate.dal.entities.PersonEntity;
 import com.example.markethibernate.gui.controller.HomeController;
 import com.example.markethibernate.gui.controller.TableViewController;
@@ -78,8 +79,11 @@ public class ListPersonState extends AbstractState implements State {
     private List<PersonEntity> fetchPersons() {
         if (filter == null || filter.isEmpty()) {
             return PersonService.getInstance().getAll();
-        } else {
+        } else if (filter.length() == 2){
             return PersonService.getInstance().getByYear(filter);
+        } else {
+            PersonEntity person = PersonService.getInstance().getById(filter);
+            return person == null ? null : List.of(person);
         }
     }
 

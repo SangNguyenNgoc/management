@@ -60,8 +60,6 @@ public class StatisticController {
         });
         chart.getData().add(series1);
         chart.setAnimated(false);
-
-
     }
 
     public void initStatDeviceByTime() {

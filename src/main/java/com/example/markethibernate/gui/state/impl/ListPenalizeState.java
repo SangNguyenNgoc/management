@@ -2,7 +2,9 @@ package com.example.markethibernate.gui.state.impl;
 
 import com.example.markethibernate.HelloApplication;
 import com.example.markethibernate.bll.services.PenalizeService;
+import com.example.markethibernate.bll.services.UsageInfoService;
 import com.example.markethibernate.dal.entities.PenalizeEntity;
+import com.example.markethibernate.dal.entities.UsageInfoEntity;
 import com.example.markethibernate.gui.controller.HomeController;
 import com.example.markethibernate.gui.controller.TableViewController;
 import com.example.markethibernate.gui.model.LabelHeader;
@@ -19,6 +21,8 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -31,8 +35,15 @@ import java.util.Optional;
 
 public class ListPenalizeState extends AbstractState implements State {
 
+    private String filter;
+
     public ListPenalizeState(HomeController homeController) {
         setHomeController(homeController);
+    }
+
+    public ListPenalizeState(HomeController homeController, String filter) {
+        setHomeController(homeController);
+        this.filter = filter;
     }
 
     private static final List<LabelHeader> PENALIZE_HEADER = List.of(
@@ -55,8 +66,9 @@ public class ListPenalizeState extends AbstractState implements State {
             content.getChildren().add(root);
             tableViewController.initTitle("Phiếu phạt");
             createTableHeader(PENALIZE_HEADER, tableViewController.getHeaderTable());
-            List<PenalizeEntity> penalizes = PenalizeService.getInstance().getALl();
-            if (penalizes.isEmpty()) {
+            createFilter(tableViewController.getRightHeader());
+            List<PenalizeEntity> penalizes = fetchPenalizes();
+            if (penalizes == null || penalizes.isEmpty()) {
                 EmptyPane emptyPane = new EmptyPane();
                 tableViewController.getContentTable().getChildren().add(emptyPane.create("Chưa có dữ liệu!"));
                 return;
@@ -119,5 +131,26 @@ public class ListPenalizeState extends AbstractState implements State {
     @Override
     public void refresh() {
         homeController.initContent(this);
+    }
+
+    public void createFilter(HBox hBox) {
+        TextField textField = new TextField();
+        textField.setPromptText("Lọc theo mã");
+        textField.setText(filter);
+        textField.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+                homeController.initContent(new ListPenalizeState(homeController, textField.getText()));
+            }
+        });
+        hBox.getChildren().add(textField);
+    }
+
+    private List<PenalizeEntity> fetchPenalizes() {
+        if (filter == null || filter.isEmpty()) {
+            return PenalizeService.getInstance().getALl();
+        } else{
+            PenalizeEntity penalize = PenalizeService.getInstance().getById(filter);
+            return penalize == null ? null : List.of(penalize);
+        }
     }
 }

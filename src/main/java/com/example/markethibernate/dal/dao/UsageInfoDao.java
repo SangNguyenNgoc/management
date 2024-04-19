@@ -73,14 +73,21 @@ public class UsageInfoDao {
 
     public UsageInfoEntity findById(long id) {
         try (Session session = sessionFactory.openSession()) {
-            var usageInfo = session.get(UsageInfoEntity.class, id);
-            session.close();
-            return usageInfo;
+            String hql = "SELECT u FROM UsageInfoEntity u JOIN FETCH u.person JOIN FETCH u.device WHERE u.id = :id";
+            Query query = session.createQuery(hql, UsageInfoEntity.class);
+            query.setParameter("id", id);
+            List<UsageInfoEntity> usageInfoList = query.getResultList();
+            if (!usageInfoList.isEmpty()) {
+                return usageInfoList.get(0);
+            } else {
+                return null;
+            }
         } catch (Exception ex) {
             logger.log(Level.SEVERE, "Query failure", ex);
             return null;
         }
     }
+
 
     public UsageInfoEntity save(UsageInfoEntity usageInfo) {
         Transaction transaction = null;
