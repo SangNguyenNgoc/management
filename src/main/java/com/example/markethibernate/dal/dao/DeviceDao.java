@@ -54,7 +54,8 @@ public class DeviceDao {
 
     public DeviceEntity findById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            Query query = session.createQuery("FROM DeviceEntity d WHERE d.id = :id and d.status = true", DeviceEntity.class);
+            Query query = session.createQuery(
+                    "FROM DeviceEntity d WHERE d.id = :id and d.status = true", DeviceEntity.class);
             query.setParameter("id", id);
             var devices = query.getResultList();
             if(!devices.isEmpty()) {

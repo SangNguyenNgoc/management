@@ -1,7 +1,9 @@
 package com.example.markethibernate.gui.controller;
 
+import com.example.markethibernate.bll.services.DeviceService;
 import com.example.markethibernate.bll.services.PenalizeService;
 import com.example.markethibernate.dal.entities.PenalizeEntity;
+import com.example.markethibernate.gui.state.impl.ListDeviceState;
 import com.example.markethibernate.gui.state.impl.PersonDetailState;
 import com.example.markethibernate.gui.utils.DialogUtil;
 import com.example.markethibernate.utils.AppUtil;
@@ -12,6 +14,8 @@ import java.util.List;
 
 public class PenalizeDetailController {
 
+    @FXML
+    private Button penaltyDeleteButton;
     @FXML
     private Button penaltyUpdateButton;
     @FXML
@@ -86,6 +90,16 @@ public class PenalizeDetailController {
             if(penalizeEntity != null) {
                 DialogUtil.getInstance().showAlert("Thông báo", "Cập nhật phiếu phạt thành công", Alert.AlertType.INFORMATION);
                 feeValidate.setText("");
+            }
+        });
+        penaltyDeleteButton.setOnMouseClicked(event -> {
+            boolean delete = DialogUtil.getInstance().showConfirm(
+                    "Xóa phiếu phạt", "Xác nhận muốn xóa phiếu phạt này?");
+            if(delete) {
+                boolean result = PenalizeService.getInstance().deleteById(penalizeId);
+                if (result) {
+                    DialogUtil.getInstance().showAlert("Thông báo", "Xóa phiếu phạt thành công", Alert.AlertType.INFORMATION);
+                }
             }
         });
     }

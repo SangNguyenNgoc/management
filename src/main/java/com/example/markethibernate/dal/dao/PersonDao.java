@@ -41,7 +41,8 @@ public class PersonDao {
 
     public PersonEntity findById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            Query query = session.createQuery("FROM PersonEntity p WHERE p.id = :id and p.status = true", PersonEntity.class);
+            Query query = session.createQuery(
+                    "FROM PersonEntity p WHERE p.id = :id and p.status = true", PersonEntity.class);
             query.setParameter("id", id);
             var persons = query.getResultList();
             if(!persons.isEmpty()) {

@@ -110,27 +110,28 @@ public class PenalizeDao {
     }
 
 
-    public PenalizeEntity deletePenalizeById(int id) {
+    public boolean deletePenalizeById(Long id) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
 
             PenalizeEntity penalize = session.get(PenalizeEntity.class, id);
             if (penalize != null) {
-                penalize.setStatus(false);
-                session.update(penalize);
+                session.delete(penalize);
+            } else {
+                return false;
             }
-
             transaction.commit();
-            return penalize;
+            return true;
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
             logger.log(Level.SEVERE, "Failed to delete penalize", e);
-            return null;
+            return false;
         }
     }
+
 
 
 

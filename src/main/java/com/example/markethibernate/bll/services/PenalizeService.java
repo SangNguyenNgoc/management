@@ -4,6 +4,7 @@ package com.example.markethibernate.bll.services;
 import com.example.markethibernate.dal.dao.DeviceDao;
 import com.example.markethibernate.dal.dao.PenalizeDao;
 import com.example.markethibernate.dal.dao.PersonDao;
+import com.example.markethibernate.dal.dao.UsageInfoDao;
 import com.example.markethibernate.dal.entities.DeviceEntity;
 import com.example.markethibernate.dal.entities.PenalizeEntity;
 import com.example.markethibernate.dal.entities.PersonEntity;
@@ -93,6 +94,14 @@ public class PenalizeService {
             return "Số tiền phải là 1 số";
         }
         return "";
+    }
+
+    public Boolean deleteById(Long id) {
+        PenalizeEntity penalize = getById(id.toString());
+        if(penalize == null) {
+            return false;
+        }
+        return PenalizeDao.getInstance().deletePenalizeById(penalize.getId());
     }
 
 }
